@@ -1,5 +1,6 @@
 package com.example.biblioteisandroid2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.biblioteisandroid2.API.models.User;
 import com.example.biblioteisandroid2.API.repository.BookRepository;
 import com.example.biblioteisandroid2.API.repository.UserRepository;
+import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
 
 import java.util.List;
 
@@ -29,10 +31,12 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         userRepository = new UserRepository();
         System.out.println(userRepository);
+
         btnLogin.setOnClickListener(v -> {
-            String email = etEmail.getText().toString();
-            String password = etContra.getText().toString();
-            login(email, password);
+//            String email = etEmail.getText().toString();
+//            String password = etContra.getText().toString();
+//            login(email, password);
+            login("a", "123");
         });
     }
 
@@ -48,9 +52,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
+
                 if (loginSuccessful) {
                     System.out.println("Login correcto");
                     Toast.makeText(MainActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
+                    // Aquí se hace la transición solo si el login es exitoso
+                    Intent intent = new Intent(MainActivity.this, Libreria.class);
+                    startActivity(intent);
                 } else {
                     System.out.println("Login incorrecto");
                     Toast.makeText(MainActivity.this, "Login incorrecto", Toast.LENGTH_SHORT).show();

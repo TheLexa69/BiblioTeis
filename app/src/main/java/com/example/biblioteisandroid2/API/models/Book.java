@@ -78,4 +78,18 @@ public class Book {
     public void setBookPicture(String bookPicture) {
         this.bookPicture = bookPicture;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", publishedDate='" + publishedDate + '\'' +
+                ", bookPicture='" + bookPicture + '\'' +
+                ", isAvailable=" + isAvailable +
+                ", bookLendings=" + bookLendings +
+                '}';
+    }
 }

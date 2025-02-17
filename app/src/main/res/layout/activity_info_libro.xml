@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InfoLibro">
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="Titulo: "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="264dp" />
+
+        <TextView
+            android:id="@+id/bookLendings"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="15dp"
+            android:text="Préstamos: "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isAvailable" />
+
+        <TextView
+            android:id="@+id/isbn"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="15dp"
+            android:text="ISBN: "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/publishedDate" />
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="15dp"
+            android:text="Autor: "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <TextView
+            android:id="@+id/isAvailable"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="180dp"
+            android:text="Estado: "
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isbn"
+            app:layout_constraintVertical_bias="0.481" />
+
+        <TextView
+            android:id="@+id/publishedDate"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:text="Fecha Publicación:"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/author" />
+
+        <ImageView
+            android:id="@+id/bookPicture"
+            android:layout_width="265dp"
+            android:layout_height="220dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <Button
+            android:id="@+id/btnInfoBookVolver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volver"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bookLendings"
+            app:layout_constraintVertical_bias="0.456" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
