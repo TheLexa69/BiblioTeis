@@ -42,5 +42,6 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
 
 }
