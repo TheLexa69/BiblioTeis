@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 //            String email = etEmail.getText().toString();
 //            String password = etContra.getText().toString();
 //            login(email, password);
-            login("a", "123");
+            login("alice@example.com", "hashedpassword1");
         });
     }
 
