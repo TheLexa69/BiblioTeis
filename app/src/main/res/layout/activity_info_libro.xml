@@ -6,7 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".InfoLibro">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
             android:id="@+id/title"
@@ -92,11 +105,12 @@
 
         <ImageView
             android:id="@+id/bookPicture"
-            android:layout_width="265dp"
-            android:layout_height="220dp"
+            android:layout_width="144dp"
+            android:layout_height="122dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
             tools:srcCompat="@tools:sample/avatars" />
 
         <Button

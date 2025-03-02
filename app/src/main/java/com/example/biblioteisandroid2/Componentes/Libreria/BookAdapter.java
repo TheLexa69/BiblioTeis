@@ -61,7 +61,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookViewHolder> {
             Intent intent = new Intent(activity, InfoLibro.class);
 
             //Cargo el id en el intent
-
             intent.putExtra( InfoLibro.BOOK_ID_EXTRA, id);
 
             //Lanzo el intent

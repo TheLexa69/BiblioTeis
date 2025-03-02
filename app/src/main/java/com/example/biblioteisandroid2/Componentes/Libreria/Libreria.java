@@ -54,18 +54,23 @@ public class Libreria extends AppCompatActivity {
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.menu_toolbar, menu);
 
+                //Aqui desactivamos la opcion de ir a la libreria
+                MenuItem inicioLibreriaItem = menu.findItem(R.id.inicio_libreria);
+                if (inicioLibreriaItem != null) {
+                    inicioLibreriaItem.setEnabled(false);
+                }
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
-                if (id == R.id.inicio_libreria) {
-                    Toast.makeText(Libreria.this, "Libreria", Toast.LENGTH_SHORT).show();
-                    Intent logoutIntent = new Intent(Libreria.this, Libreria.class);
-                    logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(logoutIntent);
-                    return true;
-                }
+//                if (id == R.id.inicio_libreria) {
+//                    Toast.makeText(Libreria.this, "Libreria", Toast.LENGTH_SHORT).show();
+//                    Intent logoutIntent = new Intent(Libreria.this, Libreria.class);
+//                    logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(logoutIntent);
+//                    return true;
+//                }
                 if (id == R.id.cerrar_sesion) {
                     Toast.makeText(Libreria.this, "Cierre de Sesión", Toast.LENGTH_SHORT).show();
                     Intent logoutIntent = new Intent(Libreria.this, MainActivity.class);
