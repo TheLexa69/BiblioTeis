@@ -72,6 +72,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookViewHolder> {
 
     @Override
     public int getItemCount() {
+        System.out.println("BookAdapter getItemCount: " + books.size());
         return books.size();
     }
 }
