@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("Login correcto");
                     Toast.makeText(MainActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
                     // Aquí se hace la transición solo si el login es exitoso
-                    Intent intent = new Intent(MainActivity.this, Libreria.class);
+                    Intent intent = new Intent(MainActivity.this, Inicio_activity.class);
                     startActivity(intent);
                 } else {
                     System.out.println("Login incorrecto");
