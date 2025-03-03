@@ -6,66 +6,131 @@
     android:layout_height="match_parent"
     tools:context=".Componentes.Libreria.Libreria">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="125dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/mint_green"
-            android:text="Buscar"
-            app:icon="@android:drawable/ic_menu_search"
-            app:layout_constraintBottom_toTopOf="@+id/rvContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.766"
-            app:layout_constraintStart_toEndOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:layout_constraintVertical_bias="0.5" />
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/green"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/green"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        </com.google.android.material.appbar.AppBarLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+            </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvContainer"
-            android:layout_width="410dp"
-            android:layout_height="603dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3">
+            <!-- Filtros -->
+            <TextView
+                android:id="@+id/textViewAutor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Autor" />
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <EditText
+                android:id="@+id/editTextAutor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Buscar por autor" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="256dp"
-            android:layout_height="34dp"
-            android:hint="Autor: Michael Feathers"
-            android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/rvContainer"
-            app:layout_constraintEnd_toStartOf="@+id/button3"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:layout_constraintVertical_bias="0.5" />
+            <TextView
+                android:id="@+id/textViewTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Título" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/editTextTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Buscar por título" />
 
+            <TextView
+                android:id="@+id/textViewISBN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ISBN" />
+
+            <EditText
+                android:id="@+id/editTextISBN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Buscar por ISBN" />
+
+            <TextView
+                android:id="@+id/textViewFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de publicación (YYYY-MM-DD)" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/editTextFecha"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Filtrar por fecha"
+                    android:background="@android:drawable/edit_text"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:focusable="false" />
+
+                <ImageView
+                    android:id="@+id/imageViewDatePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_today"
+                    android:contentDescription="Seleccionar fecha"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <ImageView
+                    android:id="@+id/imageViewReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:contentDescription="Restablecer fecha"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/checkBoxDisponibilidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Solo disponibles" />
+
+            <Button
+                android:id="@+id/buttonBuscar"
+                android:layout_width="125dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/mint_green"
+                android:text="Buscar"
+                app:icon="@android:drawable/ic_menu_search" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

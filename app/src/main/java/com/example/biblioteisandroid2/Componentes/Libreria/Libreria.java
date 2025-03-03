@@ -1,11 +1,15 @@
 package com.example.biblioteisandroid2.Componentes.Libreria;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -26,9 +30,12 @@ import com.example.biblioteisandroid2.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Calendar;
 
 public class Libreria extends AppCompatActivity {
-
+    private TextView editTextFecha;
+    private ImageView imageViewDatePicker;
+    private ImageView imageViewReset;
     private RecyclerView recyclerView;
     private BookAdapter bookAdapter;
     private List<Book> bookList = new ArrayList<>();
@@ -44,7 +51,22 @@ public class Libreria extends AppCompatActivity {
             return insets;
         });
 
-//        TOOLBAR
+        //----- CARGA DE FECHA
+        editTextFecha = findViewById(R.id.editTextFecha);
+        imageViewDatePicker = findViewById(R.id.imageViewDatePicker);
+        imageViewReset = findViewById(R.id.imageViewReset);
+
+        // Mostrar el DatePicker cuando se hace clic en la imagen del calendario
+        imageViewDatePicker.setOnClickListener(v -> showDatePickerDialog());
+
+        // Restablecer el campo de fecha al hacer clic en el botón de reset
+        imageViewReset.setOnClickListener(v -> resetDateField());
+
+        // También puedes permitir que el TextView abra el DatePicker
+        editTextFecha.setOnClickListener(v -> showDatePickerDialog());
+        //-----FIN CARGA DE FECHA
+
+        //-----TOOLBAR
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -104,14 +126,37 @@ public class Libreria extends AppCompatActivity {
         });
     }
 
+    //FUNCION PARA CARGAR FECHA
+    private void showDatePickerDialog() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+                // Formatea la fecha seleccionada
+                String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                editTextFecha.setText(selectedDate);
+            }
+        }, year, month, day);
+
+        datePickerDialog.show();
+    }
+
+    //FUNCION PARA RESETEAR EL CAMPO DE FECHA
+    private void resetDateField() {
+        // Restablecer el campo de fecha
+        editTextFecha.setText("");
+    }
+
     private void setAdapter(List<Book> list) {
         bookAdapter = new BookAdapter(this, list);
         recyclerView.setAdapter(new BookAdapter(this, list));
     }
 
     //    TOOLBAR
-
-
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        int id = item.getItemId();
