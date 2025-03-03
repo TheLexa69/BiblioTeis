@@ -75,4 +75,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookViewHolder> {
         System.out.println("BookAdapter getItemCount: " + books.size());
         return books.size();
     }
+
+    // Actualiza la lista de libros con una nueva lista de libros.
+
+    public void updateBooks(List<Book> newBooks) {
+        // Limpiar la lista de libros actual.
+        books.clear();
+        // Añadir todos los libros de la nueva lista a la lista de libros.
+        books.addAll(newBooks);
+        // Notificar al adaptador que los datos han cambiado, para que la vista se actualice.
+        notifyDataSetChanged();
+    }
+
 }
