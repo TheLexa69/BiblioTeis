@@ -7,7 +7,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +20,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
 import androidx.core.view.MenuProvider;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -28,149 +31,161 @@ import com.example.biblioteisandroid2.API.repository.BookRepository;
 import com.example.biblioteisandroid2.MainActivity;
 import com.example.biblioteisandroid2.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class Libreria extends AppCompatActivity {
+    private EditText editTextAutor, editTextTitulo, editTextISBN;
     private TextView editTextFecha;
-    private ImageView imageViewDatePicker;
-    private ImageView imageViewReset;
+    private CheckBox checkBoxDisponibilidad;
+    private Button buttonBuscar;
+    private ImageView imageViewDatePicker, imageViewReset, imageViewResetFilter;
     private RecyclerView recyclerView;
     private BookAdapter bookAdapter;
     private List<Book> bookList = new ArrayList<>();
+    private List<Book> originalBookList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_libreria);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_libreria), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        //----- CARGA DE FECHA
+        // Inicializar componentes
+        editTextAutor = findViewById(R.id.editTextAutor);
+        editTextTitulo = findViewById(R.id.editTextTitulo);
+        editTextISBN = findViewById(R.id.editTextISBN);
         editTextFecha = findViewById(R.id.editTextFecha);
+        checkBoxDisponibilidad = findViewById(R.id.checkBoxDisponibilidad);
+        buttonBuscar = findViewById(R.id.buttonBuscar);
         imageViewDatePicker = findViewById(R.id.imageViewDatePicker);
-        imageViewReset = findViewById(R.id.imageViewReset);
+        imageViewReset = findViewById(R.id.imageViewResetFecha);
+        recyclerView = findViewById(R.id.rvContainer);
+        imageViewResetFilter = findViewById(R.id.imageViewResetFilters);
 
-        // Mostrar el DatePicker cuando se hace clic en la imagen del calendario
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        bookAdapter = new BookAdapter(this, bookList);
+        recyclerView.setAdapter(bookAdapter);
+
+        loadBooks();
+
+        buttonBuscar.setOnClickListener(v -> filterBooks());
         imageViewDatePicker.setOnClickListener(v -> showDatePickerDialog());
+        imageViewReset.setOnClickListener(v -> editTextFecha.setText(""));
+        imageViewResetFilter.setOnClickListener(v -> {
+            editTextAutor.setText("");
+            editTextTitulo.setText("");
+            editTextISBN.setText("");
+            editTextFecha.setText("");
+            checkBoxDisponibilidad.setChecked(false);
+            bookAdapter.updateBooks(new ArrayList<>(originalBookList));
+        });
+        setupToolbar();
+    }
 
-        // Restablecer el campo de fecha al hacer clic en el botón de reset
-        imageViewReset.setOnClickListener(v -> resetDateField());
-
-        // También puedes permitir que el TextView abra el DatePicker
-        editTextFecha.setOnClickListener(v -> showDatePickerDialog());
-        //-----FIN CARGA DE FECHA
-
-        //-----TOOLBAR
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
         addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.menu_toolbar, menu);
-
-                //Aqui desactivamos la opcion de ir a la libreria
-                MenuItem inicioLibreriaItem = menu.findItem(R.id.inicio_libreria);
-                if (inicioLibreriaItem != null) {
-                    inicioLibreriaItem.setEnabled(false);
-                }
+                menu.findItem(R.id.inicio_libreria).setEnabled(false);
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                int id = menuItem.getItemId();
-//                if (id == R.id.inicio_libreria) {
-//                    Toast.makeText(Libreria.this, "Libreria", Toast.LENGTH_SHORT).show();
-//                    Intent logoutIntent = new Intent(Libreria.this, Libreria.class);
-//                    logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(logoutIntent);
-//                    return true;
-//                }
-                if (id == R.id.cerrar_sesion) {
-                    Toast.makeText(Libreria.this, "Cierre de Sesión", Toast.LENGTH_SHORT).show();
-                    Intent logoutIntent = new Intent(Libreria.this, MainActivity.class);
-                    logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(logoutIntent);
+                if (menuItem.getItemId() == R.id.cerrar_sesion) {
+                    startActivity(new Intent(Libreria.this, MainActivity.class)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                     return true;
                 }
                 return false;
             }
-
-
         });
-        //        FIN TOOLBAR
+    }
 
 
-        recyclerView = findViewById(R.id.rvContainer);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    private void loadBooks() {
         new BookRepository().getBooks(new BookRepository.ApiCallback<List<Book>>() {
             @Override
             public void onSuccess(List<Book> list) {
-                bookList = list;
-                setAdapter(list);
-                System.out.println("Books fetched");
+                bookList.clear();
+                bookList.addAll(list);
+                originalBookList.clear();
+                originalBookList.addAll(list);  // Guarda una copia original
+                bookAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Throwable t) {
                 Log.e("Libreria", "Error fetching books", t);
-                System.out.println("Error fetching books");
             }
         });
     }
 
-    //FUNCION PARA CARGAR FECHA
+
+
+    private void filterBooks() {
+        String authorFilter = editTextAutor.getText().toString().trim().toLowerCase();
+        String titleFilter = editTextTitulo.getText().toString().trim().toLowerCase();
+        String isbnFilter = editTextISBN.getText().toString().trim().toLowerCase();
+        String dateFilter = editTextFecha.getText().toString().trim();
+
+        boolean onlyAvailable = checkBoxDisponibilidad.isChecked();
+
+        System.out.println("authorFilter: " + authorFilter);
+        System.out.println("titleFilter: " + titleFilter);
+        System.out.println("isbnFilter: " + isbnFilter);
+        System.out.println("dateFilter: " + dateFilter);
+        System.out.println("onlyAvailable: " + onlyAvailable);
+
+        if (authorFilter.isEmpty() && titleFilter.isEmpty() && isbnFilter.isEmpty() && dateFilter.isEmpty() && !onlyAvailable) {
+            bookAdapter.updateBooks(new ArrayList<>(bookList));
+            return;
+        }
+
+        List<Book> filteredBooks = new ArrayList<>();
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        String formattedDateFilter = dateFilter;
+        try {
+            formattedDateFilter = outputFormat.format(inputFormat.parse(dateFilter)); // Convertimos la fecha al formato "YYYY-MM-DD"
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (Book book : bookList) {
+            boolean matchesAuthor = book.getAuthor().toLowerCase().contains(authorFilter);
+            boolean matchesTitle = book.getTitle().toLowerCase().contains(titleFilter);
+            boolean matchesIsbn = book.getIsbn().toLowerCase().contains(isbnFilter);
+            boolean matchesDate = book.getPublishedDate().split("T")[0].equals(formattedDateFilter);
+
+            System.out.println("matchesDate: " + matchesDate);
+            System.out.println("bookPublishedDate: " + book.getPublishedDate().split("T")[0] + " / DateFilter: " + formattedDateFilter);
+
+            boolean matchesAvailability = !onlyAvailable || book.isAvailable();
+
+            if (matchesAuthor && matchesTitle && matchesIsbn && matchesDate && matchesAvailability) {
+                filteredBooks.add(book);
+            }
+        }
+        bookAdapter.updateBooks(filteredBooks);
+    }
+
+
     private void showDatePickerDialog() {
         final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
-                // Formatea la fecha seleccionada
-                String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
-                editTextFecha.setText(selectedDate);
-            }
-        }, year, month, day);
-
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) ->
+                editTextFecha.setText(year + "-" + (month + 1) + "-" + dayOfMonth),
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
-
-    //FUNCION PARA RESETEAR EL CAMPO DE FECHA
-    private void resetDateField() {
-        // Restablecer el campo de fecha
-        editTextFecha.setText("");
-    }
-
-    private void setAdapter(List<Book> list) {
-        bookAdapter = new BookAdapter(this, list);
-        recyclerView.setAdapter(new BookAdapter(this, list));
-    }
-
-    //    TOOLBAR
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.cerrar_sesion) {
-//            Intent logoutIntent = new Intent(this, MainActivity.class);
-//            logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(logoutIntent);
-//            return true;
-//        } else if (id == R.id.inicio_libreria) {
-//            Intent homeIntent = new Intent(this, Libreria.class);
-//            startActivity(homeIntent);
-//            return true;
-//        } else {
-//            return super.onOptionsItemSelected(item);
-//        }
-//    }
 }
