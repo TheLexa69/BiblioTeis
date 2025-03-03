@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -118,6 +117,7 @@ public class Libreria extends AppCompatActivity {
             public void onSuccess(List<Book> list) {
                 bookList.clear();
                 bookList.addAll(list);
+//                Log.d("BookAdapter", "Cargando libro: " + bookList);
                 originalBookList.clear();
                 originalBookList.addAll(list);  // Guarda una copia original
                 bookAdapter.notifyDataSetChanged();
@@ -130,8 +130,6 @@ public class Libreria extends AppCompatActivity {
         });
     }
 
-
-
     private void filterBooks() {
         String authorFilter = editTextAutor.getText().toString().trim().toLowerCase();
         String titleFilter = editTextTitulo.getText().toString().trim().toLowerCase();
@@ -139,12 +137,6 @@ public class Libreria extends AppCompatActivity {
         String dateFilter = editTextFecha.getText().toString().trim();
 
         boolean onlyAvailable = checkBoxDisponibilidad.isChecked();
-
-        System.out.println("authorFilter: " + authorFilter);
-        System.out.println("titleFilter: " + titleFilter);
-        System.out.println("isbnFilter: " + isbnFilter);
-        System.out.println("dateFilter: " + dateFilter);
-        System.out.println("onlyAvailable: " + onlyAvailable);
 
         if (authorFilter.isEmpty() && titleFilter.isEmpty() && isbnFilter.isEmpty() && dateFilter.isEmpty() && !onlyAvailable) {
             bookAdapter.updateBooks(new ArrayList<>(bookList));
@@ -157,26 +149,42 @@ public class Libreria extends AppCompatActivity {
 
         String formattedDateFilter = dateFilter;
         try {
-            formattedDateFilter = outputFormat.format(inputFormat.parse(dateFilter)); // Convertimos la fecha al formato "YYYY-MM-DD"
+            formattedDateFilter = outputFormat.format(inputFormat.parse(dateFilter)); // Convierte a "YYYY-MM-DD"
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         for (Book book : bookList) {
-            boolean matchesAuthor = book.getAuthor().toLowerCase().contains(authorFilter);
-            boolean matchesTitle = book.getTitle().toLowerCase().contains(titleFilter);
-            boolean matchesIsbn = book.getIsbn().toLowerCase().contains(isbnFilter);
-            boolean matchesDate = book.getPublishedDate().split("T")[0].equals(formattedDateFilter);
 
-            System.out.println("matchesDate: " + matchesDate);
-            System.out.println("bookPublishedDate: " + book.getPublishedDate().split("T")[0] + " / DateFilter: " + formattedDateFilter);
+            boolean matchesAuthor = authorFilter.isEmpty() || book.getAuthor().toLowerCase().contains(authorFilter.toLowerCase());
+            boolean matchesTitle = titleFilter.isEmpty() || book.getTitle().toLowerCase().contains(titleFilter.toLowerCase());
+            boolean matchesIsbn = isbnFilter.isEmpty() || book.getIsbn().toLowerCase().contains(isbnFilter.toLowerCase());
+            boolean matchesDate = dateFilter.isEmpty() || book.getPublishedDate().split("T")[0].equals(formattedDateFilter);
 
             boolean matchesAvailability = !onlyAvailable || book.isAvailable();
+
+            System.out.println("filterBooks Autor: " + authorFilter);
+            System.out.println("filterBooks Autor" + book.getAuthor().toLowerCase());
+
+            System.out.println("filterBooks Titulo: " + titleFilter);
+            System.out.println("filterBooks Titulo" + book.getTitle().toLowerCase());
+
+            System.out.println("filterBooks ISBN: " + isbnFilter);
+            System.out.println("filterBooks ISBN: " + isbnFilter.getClass());
+            System.out.println("filterBooks ISBN: " + book.getIsbn().toLowerCase());
+            System.out.println("filterBooks ISBN: " + book.getIsbn().getClass());
+
+            System.out.println("filterBooks Date: " + dateFilter);
+            System.out.println("filterBooks Date" + book.getPublishedDate().split("T")[0]);
+
+            System.out.println("filterBooks: " + matchesAuthor + " / " + matchesDate + " / " +  matchesTitle + " / " + matchesIsbn);
 
             if (matchesAuthor && matchesTitle && matchesIsbn && matchesDate && matchesAvailability) {
                 filteredBooks.add(book);
             }
         }
+
+
         bookAdapter.updateBooks(filteredBooks);
     }
 

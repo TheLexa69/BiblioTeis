@@ -35,49 +35,61 @@
                 android:id="@+id/textViewAutor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="5dp"
                 android:text="Autor" />
 
             <EditText
                 android:id="@+id/editTextAutor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
                 android:hint="Buscar por autor" />
 
             <TextView
                 android:id="@+id/textViewTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="10dp"
                 android:text="Título" />
 
             <EditText
                 android:id="@+id/editTextTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
                 android:hint="Buscar por título" />
 
             <TextView
                 android:id="@+id/textViewISBN"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="10dp"
                 android:text="ISBN" />
 
             <EditText
                 android:id="@+id/editTextISBN"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
                 android:hint="Buscar por ISBN" />
 
             <TextView
                 android:id="@+id/textViewFecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fecha de publicación (YYYY-MM-DD)" />
+                android:text="Fecha de publicación (YYYY-MM-DD)"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="50dp">
 
                 <TextView
                     android:id="@+id/editTextFecha"
@@ -115,7 +127,9 @@
                 android:id="@+id/checkBoxDisponibilidad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Solo disponibles" />
+                android:text="Solo disponibles"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="10dp"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
