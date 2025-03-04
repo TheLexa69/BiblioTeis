@@ -2,6 +2,7 @@ package com.example.biblioteisandroid2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -56,13 +57,24 @@ public class MainActivity extends AppCompatActivity {
                 if (loginSuccessful) {
                     System.out.println("Login correcto");
                     Toast.makeText(MainActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
-                    // Aquí se hace la transición solo si el login es exitoso
+                    // Obtén el ID del usuario
+                    int userId = 0; // Inicializa con un valor por defecto
+                    for (User user : users) {
+                        if (user.getEmail().equals(email) && user.getPasswordHash().equals(password)) {
+                            userId = user.getId();
+                            break;
+                        }
+                    }
+                    Log.d("MainActivity", "ID del usuario antes de pasar a Libreria: " + userId);
+                    // Crea el intent y pasa el ID como extra
                     Intent intent = new Intent(MainActivity.this, Libreria.class);
+                    intent.putExtra("USER_ID", userId); // Enviamos el ID del usuario
                     startActivity(intent);
                 } else {
                     System.out.println("Login incorrecto");
                     Toast.makeText(MainActivity.this, "Login incorrecto", Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override
