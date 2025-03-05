@@ -21,17 +21,18 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    EditText etEmail, etContra;
+    Button btnLogin;
+    UserRepository userRepository;
+    SharedPreferences sharedPreferences;
     private static final String EMAIL = "logged_email";
     private static final String PASSWORD = "logged_password";
-    private EditText etEmail, etContra;
-    private Button btnLogin;
-    private UserRepository userRepository;
-    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         etEmail = findViewById(R.id.etEmail);
         etContra = findViewById(R.id.etContra);
@@ -43,6 +44,17 @@ public class MainActivity extends AppCompatActivity {
             MasterKey masterKey = new MasterKey.Builder(this)
                     .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                     .build();
+
+            sharedPreferences = EncryptedSharedPreferences.create(
+                    this,
+                    "secure_prefs",
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         btnLogin.setOnClickListener(v -> {
             // Tomamos los valores reales del EditText
@@ -65,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<User> users) {
                 int userId = -1;
+                User usuarioAcreditado = null;
 
                 Log.d("MainActivity", "Usuarios obtenidos: " + users.size());
 
@@ -75,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     if (user.getEmail().trim().equalsIgnoreCase(email.trim()) &&
                             user.getPasswordHash().trim().equals(password.trim())) {
 
+                        usuarioAcreditado = user;
                         userId = user.getId();
                         Log.d("MainActivity", "Usuario encontrado: " + userId);
                         break;
@@ -86,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, Inicio_activity.class);
                     intent.putExtra("USER_ID", userId);
                     startActivity(intent);
+
+                    // Guardar información del usuario en EncryptedSharedPreferences
+                    sharedPreferences.edit()
+                            .putString(EMAIL, usuarioAcreditado.getEmail())
+                            .putString(PASSWORD, usuarioAcreditado.getPasswordHash())
+                            .apply();
+
+
                 } else {
                     Log.d("MainActivity", "Login incorrecto");
                     Toast.makeText(MainActivity.this, "Login incorrecto", Toast.LENGTH_SHORT).show();

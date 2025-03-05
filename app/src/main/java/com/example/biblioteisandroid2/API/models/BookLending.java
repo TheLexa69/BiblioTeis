@@ -52,4 +52,10 @@ public class BookLending {
     public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
     }
+
+    public Book getBook() {return book;}
+    public void setBook(Book book) {this.book = book;}
+
+    public User getUser() {return user;}
+    public void setUser(User user) {this.user = user;}
 }

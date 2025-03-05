@@ -40,7 +40,7 @@ public class InicioBookAdapter extends RecyclerView.Adapter<InicioBookAdapter.Bo
         holder.authorTextView.setText(book.getAuthor());
         holder.publishedDateTextView.setText(book.getPublishedDate());
         // Aquí podrías poner una imagen real si tienes una URL o recurso
-        holder.bookImageView.setImageResource(R.drawable.book_1);  // Usamos una imagen placeholder por ahora
+        holder.bookImageView.setImageResource(R.drawable.book_1);
     }
 
     @Override

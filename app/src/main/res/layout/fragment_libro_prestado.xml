@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="5dp">
+    android:paddingTop="5dp"
+    tools:context=".Libro">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="206dp">
+        android:layout_height="143dp">
 
         <ImageView
             android:id="@+id/bookPicture"
@@ -25,9 +26,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="12dp"
             android:text="Título: "
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bookPicture"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/loanDate"
@@ -46,20 +47,9 @@
             android:layout_height="23dp"
             android:layout_marginTop="8dp"
             android:text="Fecha de Devolución:"
-            app:layout_constraintStart_toEndOf="@+id/bookPicture"
-            app:layout_constraintTop_toBottomOf="@+id/loanDate"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <Button
-            android:id="@+id/btnVerInfoLibro"
-            android:layout_width="156dp"
-            android:layout_height="41dp"
-            android:text="Ver más..."
-            android:backgroundTint="@color/green"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dueDate" />
+            app:layout_constraintStart_toEndOf="@+id/bookPicture"
+            app:layout_constraintTop_toBottomOf="@+id/loanDate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
