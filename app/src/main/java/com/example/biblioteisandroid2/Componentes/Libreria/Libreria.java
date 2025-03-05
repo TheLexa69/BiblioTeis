@@ -57,6 +57,14 @@ public class Libreria extends AppCompatActivity {
         setContentView(R.layout.activity_libreria);
 
         // Inicializar componentes
+        int userId = getIntent().getIntExtra("USER_ID", -1); // -1 como valor por defecto
+        if (userId != -1) {
+            Log.d("Libreria", "ID del usuario recibido: " + userId);
+        } else {
+            Log.e("Libreria", "No se ha proporcionado un ID de usuario");
+        }
+
+
         editTextAutor = findViewById(R.id.editTextAutor);
         editTextTitulo = findViewById(R.id.editTextTitulo);
         editTextISBN = findViewById(R.id.editTextISBN);
@@ -69,7 +77,8 @@ public class Libreria extends AppCompatActivity {
         imageViewResetFilter = findViewById(R.id.imageViewResetFilters);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        bookAdapter = new BookAdapter(this, bookList);
+
+        bookAdapter = new BookAdapter(this, bookList, userId);
         recyclerView.setAdapter(bookAdapter);
 
         loadBooks();
@@ -109,7 +118,6 @@ public class Libreria extends AppCompatActivity {
             }
         });
     }
-
 
     private void loadBooks() {
         new BookRepository().getBooks(new BookRepository.ApiCallback<List<Book>>() {
@@ -163,22 +171,6 @@ public class Libreria extends AppCompatActivity {
 
             boolean matchesAvailability = !onlyAvailable || book.isAvailable();
 
-            System.out.println("filterBooks Autor: " + authorFilter);
-            System.out.println("filterBooks Autor" + book.getAuthor().toLowerCase());
-
-            System.out.println("filterBooks Titulo: " + titleFilter);
-            System.out.println("filterBooks Titulo" + book.getTitle().toLowerCase());
-
-            System.out.println("filterBooks ISBN: " + isbnFilter);
-            System.out.println("filterBooks ISBN: " + isbnFilter.getClass());
-            System.out.println("filterBooks ISBN: " + book.getIsbn().toLowerCase());
-            System.out.println("filterBooks ISBN: " + book.getIsbn().getClass());
-
-            System.out.println("filterBooks Date: " + dateFilter);
-            System.out.println("filterBooks Date" + book.getPublishedDate().split("T")[0]);
-
-            System.out.println("filterBooks: " + matchesAuthor + " / " + matchesDate + " / " +  matchesTitle + " / " + matchesIsbn);
-
             if (matchesAuthor && matchesTitle && matchesIsbn && matchesDate && matchesAvailability) {
                 filteredBooks.add(book);
             }
@@ -188,7 +180,6 @@ public class Libreria extends AppCompatActivity {
         bookAdapter.updateBooks(filteredBooks);
     }
 
-
     private void showDatePickerDialog() {
         final Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) ->
@@ -196,4 +187,6 @@ public class Libreria extends AppCompatActivity {
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
+
+
 }

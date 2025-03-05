@@ -81,14 +81,11 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="36dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="180dp"
             android:text="Estado: "
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/isbn"
-            app:layout_constraintVertical_bias="0.481" />
+            app:layout_constraintTop_toBottomOf="@+id/isbn" />
 
         <TextView
             android:id="@+id/publishedDate"
@@ -117,14 +114,38 @@
             android:id="@+id/btnInfoBookVolver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
             android:text="Volver"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bookLendings"
-            android:backgroundTint="@color/green"
-            app:layout_constraintVertical_bias="0.456" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="410dp"
+            android:layout_height="46dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/btnInfoBookVolver"
+            app:layout_constraintTop_toBottomOf="@+id/bookLendings"
+            tools:layout_editor_absoluteX="1dp">
+
+                <Button
+                    android:id="@+id/buttonPrestarLibro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/mint_green"
+                    android:enabled="false"
+                    android:text="Prestar libro" />
+
+                <Button
+                    android:id="@+id/buttonDevolverLibro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/mint_green"
+                    android:enabled="false"
+                    android:text="Devolver libro" />
+        </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

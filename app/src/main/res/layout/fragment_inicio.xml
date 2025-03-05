@@ -43,7 +43,7 @@
             android:layout_marginTop="20dp"
             android:text="Fecha Publicación:"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.126"
+            app:layout_constraintHorizontal_bias="0.073"
             app:layout_constraintStart_toEndOf="@+id/bookPicture"
             app:layout_constraintTop_toBottomOf="@+id/author" />
 
@@ -54,39 +54,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
-
-        <TextView
-            android:id="@+id/tvExistencias"
-            android:layout_width="170dp"
-            android:layout_height="48dp"
-            android:text="Libros Disponibles: "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.028"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="142dp" />
-
-        <TextView
-            android:id="@+id/tvDisponibles"
-            android:layout_width="163dp"
-            android:layout_height="45dp"
-            android:text="Existencias Totales: "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.023"
-            app:layout_constraintStart_toEndOf="@+id/tvExistencias"
-            tools:layout_editor_absoluteY="142dp" />
-
-        <Button
-            android:id="@+id/btnVerInfoLibro"
-            android:layout_width="156dp"
-            android:layout_height="41dp"
-            android:backgroundTint="@color/green"
-            android:text="Ver más..."
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.713"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.812" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

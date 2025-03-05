@@ -18,7 +18,8 @@ public class BookViewHolder extends RecyclerView.ViewHolder {
     ImageView bookPicture;
     Button btnVerInfoLibro;
 
-
+    TextView tvExistencias;
+    TextView tvDisponibles;
 
     public BookViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -28,7 +29,8 @@ public class BookViewHolder extends RecyclerView.ViewHolder {
         tvPublishedDate = itemView.findViewById(R.id.publishedDate);
         bookPicture = itemView.findViewById(R.id.bookPicture);
         btnVerInfoLibro = itemView.findViewById(R.id.btnVerInfoLibro);
-
+        tvExistencias = itemView.findViewById(R.id.tvExistencias);
+        tvDisponibles = itemView.findViewById(R.id.tvDisponibles);
     }
 
 
