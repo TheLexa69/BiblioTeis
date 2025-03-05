@@ -25,10 +25,16 @@ import java.util.List;
 public class Inicio_activity extends AppCompatActivity {
 
     private RecyclerView recyclerViewRecommended;
-    private List<Book> bookList; // Añadido para mantener la lista de libros
+    private List<Book> bookList; // Lista para almacenar los libros
     private InicioBookAdapter inicioBookAdapter;
     private int userId;
 
+    /**
+     * Método que se ejecuta cuando se crea la actividad.
+     * Se configura el RecyclerView y se inicializa la lista de libros.
+     *
+     * @param savedInstanceState Estado guardado de la actividad (si existe).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +59,19 @@ public class Inicio_activity extends AppCompatActivity {
         bookList.add(createBook(2, "ASP.NET Core in Action", "Andrew Lock"));
         bookList.add(createBook(3, "The Pragmatic Programmer", "Andrew Hunt"));
 
-        // Configurar el adaptador con la lista de libros
+        // Configuración del adaptador con la lista de libros
         inicioBookAdapter = new InicioBookAdapter(bookList);
         recyclerViewRecommended.setAdapter(inicioBookAdapter);
     }
 
+    /**
+     * Crea un objeto de tipo Book con valores predeterminados.
+     *
+     * @param id    El ID del libro.
+     * @param title El título del libro.
+     * @param author El autor del libro.
+     * @return Un objeto Book con los valores proporcionados.
+     */
     private Book createBook(int id, String title, String author) {
         Book book = new Book();
         book.setId(id);
@@ -69,6 +83,10 @@ public class Inicio_activity extends AppCompatActivity {
         return book;
     }
 
+    /**
+     * Configura el botón para navegar a la actividad de la librería.
+     * Cuando se hace clic, inicia la actividad Libreria.
+     */
     private void setupButtonLibreria() {
         Button buttonLibreria = findViewById(R.id.buttonLibreria);
         buttonLibreria.setOnClickListener(new View.OnClickListener() {

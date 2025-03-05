@@ -15,11 +15,22 @@ import com.example.biblioteisandroid2.API.repository.BookRepository;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+/**
+ * Actividad que gestiona el escaneo de códigos QR para el préstamo de libros.
+ * Utiliza la biblioteca ZXing para leer los códigos y procesa el préstamo en el sistema.
+ */
 public class ScannerActivity extends AppCompatActivity {
 
+    /** Repositorio para gestionar el préstamo de libros */
     private BookLendingRepository bookLendingRepository;
+    /** ID del usuario que está realizando el escaneo */
     private int userId;
 
+    /**
+     * Método llamado al crear la actividad. Configura el escaneo y recoge el ID del usuario.
+     *
+     * @param savedInstanceState Estado guardado de la actividad.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +46,19 @@ public class ScannerActivity extends AppCompatActivity {
             return;
         }
 
+        // Iniciar el escaneo del código QR
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
         intentIntegrator.setPrompt("Escanea un código QR");
         intentIntegrator.initiateScan();
     }
 
+    /**
+     * Maneja el resultado del escaneo del código QR.
+     *
+     * @param requestCode Código de solicitud del intent.
+     * @param resultCode Código de resultado devuelto por la actividad secundaria.
+     * @param data Datos devueltos por la actividad secundaria.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -60,6 +79,8 @@ public class ScannerActivity extends AppCompatActivity {
                 BookLendingForm lendingForm = new BookLendingForm(bookId, userId);
                 Log.d("ScannerActivity", "Lending book with ID: " + bookId + " for user ID: " + userId);
                 Log.d("ScannerActivity", "lendingForm: " + lendingForm);
+
+                // Realizar el préstamo del libro
                 bookLendingRepository.lendBook(userId, bookId, new BookRepository.ApiCallback<Boolean>() {
                     @Override
                     public void onSuccess(Boolean success) {
@@ -90,5 +111,4 @@ public class ScannerActivity extends AppCompatActivity {
             finish();
         }
     }
-
 }
