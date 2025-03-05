@@ -27,6 +27,7 @@ public class Inicio_activity extends AppCompatActivity {
     private RecyclerView recyclerViewRecommended;
     private List<Book> bookList; // Lista para almacenar los libros
     private InicioBookAdapter inicioBookAdapter;
+    private int userId;
 
     /**
      * Método que se ejecuta cuando se crea la actividad.
@@ -38,6 +39,14 @@ public class Inicio_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+
+        userId = getIntent().getIntExtra("USER_ID", -1); // -1 como valor por defecto
+        if (userId != -1) {
+            Log.d("Libreria", "ID del usuario recibido: " + userId);
+        } else {
+            Log.e("Libreria", "No se ha proporcionado un ID de usuario");
+        }
+
 
         recyclerViewRecommended = findViewById(R.id.recyclerViewRecommended);
         recyclerViewRecommended.setLayoutManager(new LinearLayoutManager(this));
@@ -84,6 +93,8 @@ public class Inicio_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Inicio_activity.this, Libreria.class);
+                Log.d("Inicio_activity", "Enviando a Libreria -> User ID: " + userId);
+                intent.putExtra("USER_ID", userId);
                 startActivity(intent);
             }
         });
