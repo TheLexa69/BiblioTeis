@@ -34,54 +34,59 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(userRepository);
 
         btnLogin.setOnClickListener(v -> {
-//            String email = etEmail.getText().toString();
-//            String password = etContra.getText().toString();
-//            login(email, password);
-            login("alice@example.com", "hashedpassword1");
+            // Tomamos los valores reales del EditText
+            String email = etEmail.getText().toString().trim();
+            String password = etContra.getText().toString().trim();
+
+            // Si están vacíos, usamos valores por defecto
+            if (email.isEmpty()) email = "alice@example.com";
+            if (password.isEmpty()) password = "hashedpassword1";
+
+            Log.d("MainActivity", "Intentando login con: " + email + " - " + password);
+
+            login(email, password);
         });
+
     }
 
     private void login(String email, String password) {
         userRepository.getUsers(new BookRepository.ApiCallback<List<User>>() {
-
             @Override
             public void onSuccess(List<User> users) {
-                boolean loginSuccessful = false;
+                int userId = -1;
+
+                Log.d("MainActivity", "Usuarios obtenidos: " + users.size());
+
                 for (User user : users) {
-                    if (user.getEmail().equals(email) && user.getPasswordHash().equals(password)) {
-                        loginSuccessful = true;
+                    Log.d("MainActivity", "Verificando: " + user.getEmail() + " - " + user.getPasswordHash());
+
+                    // Eliminamos espacios y aseguramos coincidencia exacta
+                    if (user.getEmail().trim().equalsIgnoreCase(email.trim()) &&
+                            user.getPasswordHash().trim().equals(password.trim())) {
+
+                        userId = user.getId();
+                        Log.d("MainActivity", "Usuario encontrado: " + userId);
                         break;
                     }
                 }
 
-                if (loginSuccessful) {
-                    System.out.println("Login correcto");
+                if (userId != -1) {
                     Toast.makeText(MainActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
-                    // Obtén el ID del usuario
-                    int userId = 0; // Inicializa con un valor por defecto
-                    for (User user : users) {
-                        if (user.getEmail().equals(email) && user.getPasswordHash().equals(password)) {
-                            userId = user.getId();
-                            break;
-                        }
-                    }
-                    Log.d("MainActivity", "ID del usuario antes de pasar a Libreria: " + userId);
-                    // Crea el intent y pasa el ID como extra
                     Intent intent = new Intent(MainActivity.this, Libreria.class);
-                    intent.putExtra("USER_ID", userId); // Enviamos el ID del usuario
+                    intent.putExtra("USER_ID", userId);
                     startActivity(intent);
                 } else {
-                    System.out.println("Login incorrecto");
+                    Log.d("MainActivity", "Login incorrecto");
                     Toast.makeText(MainActivity.this, "Login incorrecto", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println("Error fetching users");
-                Toast.makeText(MainActivity.this, "Error fetching users", Toast.LENGTH_SHORT).show();
+                Log.e("MainActivity", "Error al obtener usuarios", t);
+                Toast.makeText(MainActivity.this, "Error al obtener usuarios", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }
