@@ -95,6 +95,10 @@ public class Inicio_activity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Configura el botón para navegar a la actividad de usuario.
+     * Cuando se hace clic, inicia la actividad UsuarioActivity.
+     */
     // Nuevo método para configurar el botón "Usuario"
     private void setupButtonUsuario() {
         Button buttonUsuario = findViewById(R.id.buttonUsuario);

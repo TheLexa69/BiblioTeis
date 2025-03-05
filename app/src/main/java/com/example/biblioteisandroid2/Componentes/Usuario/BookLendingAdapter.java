@@ -1,9 +1,12 @@
 package com.example.biblioteisandroid2.Componentes.Usuario;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.biblioteisandroid2.API.models.BookLending;
+import com.example.biblioteisandroid2.InfoLibro;
 import com.example.biblioteisandroid2.R;
 
 import java.text.ParseException;
@@ -27,6 +31,7 @@ import java.util.Locale;
 public class BookLendingAdapter extends RecyclerView.Adapter<BookLendingAdapter.BookViewHolder> {
 
     private final List<BookLending> bookLendingList;
+    private final int userId;
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     /**
@@ -34,8 +39,9 @@ public class BookLendingAdapter extends RecyclerView.Adapter<BookLendingAdapter.
      *
      * @param bookLendingList Lista de objetos BookLending que serán mostrados en el RecyclerView.
      */
-    public BookLendingAdapter(List<BookLending> bookLendingList) {
+    public BookLendingAdapter(List<BookLending> bookLendingList, int userId) {
         this.bookLendingList = bookLendingList != null ? bookLendingList : List.of();
+        this.userId = userId;
     }
 
     /**
@@ -74,6 +80,14 @@ public class BookLendingAdapter extends RecyclerView.Adapter<BookLendingAdapter.
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
+
+        holder.btnVerInfoLibro.setOnClickListener(v -> {
+            Context context = v.getContext();
+            Intent intent = new Intent(context, InfoLibro.class);
+            intent.putExtra(InfoLibro.BOOK_ID_EXTRA, bookLending.getBook().getId());
+            intent.putExtra(InfoLibro.USER_ID_EXTRA, userId);
+            context.startActivity(intent);
+        });
     }
 
     /**
@@ -124,7 +138,7 @@ public class BookLendingAdapter extends RecyclerView.Adapter<BookLendingAdapter.
     public static class BookViewHolder extends RecyclerView.ViewHolder {
         TextView title, loanDate, dueDate;
         ImageView bookImageView;
-
+        Button btnVerInfoLibro;
         /**
          * Constructor que inicializa las vistas asociadas a un ítem de libro prestado.
          *
@@ -136,6 +150,7 @@ public class BookLendingAdapter extends RecyclerView.Adapter<BookLendingAdapter.
             loanDate = itemView.findViewById(R.id.loanDate);
             dueDate = itemView.findViewById(R.id.dueDate);
             bookImageView = itemView.findViewById(R.id.bookPicture);
+            btnVerInfoLibro = itemView.findViewById(R.id.btnVerInfoLibro);
         }
     }
 }

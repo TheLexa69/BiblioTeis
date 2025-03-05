@@ -50,6 +50,12 @@ public class InfoLibro extends AppCompatActivity {
     private ImageView ivPortada;
     private Button btnVolver, btnPrestarLibro, btnDevolverLibro;
 
+    /**
+     * Método que se ejecuta al crear la actividad.
+     * Configura la interfaz de usuario, inicializa componentes y carga datos del libro.
+     *
+     * @param savedInstanceState Estado guardado de la instancia anterior de la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +198,14 @@ public class InfoLibro extends AppCompatActivity {
         btnVolver.setOnClickListener(v -> finish());
     }
 
+    /**
+     * Método que se ejecuta cuando se retorna de una actividad iniciada con startActivityForResult.
+     * Muestra un mensaje con el ID del libro prestado y el código QR escaneado.
+     *
+     * @param requestCode Código de solicitud con el que se inició la actividad.
+     * @param resultCode Código de resultado devuelto por la actividad.
+     * @param data Intent que contiene los datos devueltos por la actividad.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

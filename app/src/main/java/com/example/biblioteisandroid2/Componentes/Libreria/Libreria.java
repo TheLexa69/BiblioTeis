@@ -63,6 +63,13 @@ public class Libreria extends AppCompatActivity {
     /** Lista original de libros para restaurar filtros */
     private List<Book> originalBookList = new ArrayList<>();
 
+    /**
+     * Método que se ejecuta al crear la actividad.
+     * Inicializa los componentes de la interfaz de usuario y configura el RecyclerView.
+     * También carga los libros desde el repositorio y configura los listeners para los botones.
+     *
+     * @param savedInstanceState Estado guardado de la instancia anterior de la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,7 +151,7 @@ public class Libreria extends AppCompatActivity {
             public void onSuccess(List<Book> list) {
                 bookList.clear();
                 bookList.addAll(list);
-//                Log.d("BookAdapter", "Cargando libro: " + bookList);
+                //Log.d("BookAdapter", "Cargando libro: " + bookList);
                 originalBookList.clear();
                 originalBookList.addAll(list);  // Guarda una copia original
                 bookAdapter.notifyDataSetChanged();
@@ -202,6 +209,10 @@ public class Libreria extends AppCompatActivity {
         bookAdapter.updateBooks(filteredBooks);
     }
 
+    /**
+     * Muestra un cuadro de diálogo para seleccionar una fecha.
+     * La fecha seleccionada se muestra en el campo de texto de la fecha.
+     */
     private void showDatePickerDialog() {
         final Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) ->

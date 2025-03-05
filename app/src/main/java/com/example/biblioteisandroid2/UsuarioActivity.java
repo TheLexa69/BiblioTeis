@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import android.widget.TextView;
 
@@ -133,7 +134,7 @@ public class UsuarioActivity extends AppCompatActivity {
      */
     private void setupRecyclerView() {
         if (bookLendings != null && !bookLendings.isEmpty()) {
-            bookAdapter = new BookLendingAdapter(bookLendings);
+            bookAdapter = new BookLendingAdapter(bookLendings, userId);
             recyclerViewBooks.setLayoutManager(new LinearLayoutManager(this));
             recyclerViewBooks.setAdapter(bookAdapter);
             findViewById(R.id.noBooksMessage).setVisibility(View.GONE);
