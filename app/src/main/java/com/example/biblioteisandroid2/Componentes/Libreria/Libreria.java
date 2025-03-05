@@ -39,15 +39,28 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Actividad principal de la librería, donde los usuarios pueden buscar y filtrar libros.
+ */
 public class Libreria extends AppCompatActivity {
+
+    /** Campos de entrada para buscar libros por autor, título e ISBN */
     private EditText editTextAutor, editTextTitulo, editTextISBN;
+    /** Campo de entrada para la fecha de publicación */
     private TextView editTextFecha;
+    /** Checkbox para filtrar por disponibilidad */
     private CheckBox checkBoxDisponibilidad;
+    /** Botón para realizar la búsqueda de libros */
     private Button buttonBuscar;
+    /** Icono para abrir el selector de fecha */
     private ImageView imageViewDatePicker, imageViewReset, imageViewResetFilter;
+    /** RecyclerView para mostrar la lista de libros */
     private RecyclerView recyclerView;
+    /** Adaptador para gestionar la lista de libros */
     private BookAdapter bookAdapter;
+    /** Lista de libros cargados */
     private List<Book> bookList = new ArrayList<>();
+    /** Lista original de libros para restaurar filtros */
     private List<Book> originalBookList = new ArrayList<>();
 
     @Override
@@ -97,6 +110,9 @@ public class Libreria extends AppCompatActivity {
         setupToolbar();
     }
 
+    /**
+     * Configura la barra de herramientas con opciones de menú.
+     */
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -119,6 +135,9 @@ public class Libreria extends AppCompatActivity {
         });
     }
 
+    /**
+     * Carga los libros desde el repositorio.
+     */
     private void loadBooks() {
         new BookRepository().getBooks(new BookRepository.ApiCallback<List<Book>>() {
             @Override
@@ -138,6 +157,9 @@ public class Libreria extends AppCompatActivity {
         });
     }
 
+    /**
+     * Filtra los libros según los criterios ingresados por el usuario.
+     */
     private void filterBooks() {
         String authorFilter = editTextAutor.getText().toString().trim().toLowerCase();
         String titleFilter = editTextTitulo.getText().toString().trim().toLowerCase();
