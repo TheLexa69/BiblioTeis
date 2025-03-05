@@ -2,6 +2,7 @@ package com.example.biblioteisandroid2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,16 +21,25 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.biblioteisandroid2.API.models.BookLending;
+import com.example.biblioteisandroid2.API.repository.BookLendingRepository;
+import com.example.biblioteisandroid2.API.repository.BookRepository;
 import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InfoLibro extends AppCompatActivity {
 
-
     public static final String BOOK_ID_EXTRA = "id";
-    //declare visual components
+    public static final String USER_ID_EXTRA = "userId";
+    private int userId;
+    private BookLendingRepository bookLendingRepository;
+
+    // Componentes visuales
     TextView tvISBN, tvTitulo, tvAutor, tvFecha, tvDisponible, tvBooklending;
     ImageView ivPortada;
-    Button btnVolver;
+    Button btnVolver, btnPrestarLibro, btnDevolverLibro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,44 +52,48 @@ public class InfoLibro extends AppCompatActivity {
             return insets;
         });
 
-        //        TOOLBAR
+        // TOOLBAR
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.menu_toolbar, menu);
-
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if (id == R.id.inicio_libreria) {
-                    Toast.makeText(InfoLibro.this, "Libreria", Toast.LENGTH_SHORT).show();
-                    Intent logoutIntent = new Intent(InfoLibro.this, Libreria.class);
-                    logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(logoutIntent);
+                    Toast.makeText(InfoLibro.this, "Librería", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(InfoLibro.this, Libreria.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     return true;
                 }
                 if (id == R.id.cerrar_sesion) {
-                    Toast.makeText(InfoLibro.this, "Cierre de Sesión", Toast.LENGTH_SHORT).show();
-                    Intent logoutIntent = new Intent(InfoLibro.this, MainActivity.class);
-                    logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(logoutIntent);
+                    Toast.makeText(InfoLibro.this, "Cierre de sesión", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(InfoLibro.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     return true;
                 }
                 return false;
             }
-
-
         });
-        //        FIN TOOLBAR
 
+        // Obtener ID del usuario logueado
+        userId = getIntent().getIntExtra(USER_ID_EXTRA, -1);
+        if (userId == -1) {
+            Log.e("InfoLibro", "No se ha proporcionado un ID de usuario");
+        } else {
+            Log.d("InfoLibro", "ID del usuario: " + userId);
+        }
 
-        //initialize visual components
+        // Inicializar componentes visuales
+        btnPrestarLibro = findViewById(R.id.buttonPrestarLibro);
+        btnDevolverLibro = findViewById(R.id.buttonDevolverLibro);
         tvAutor = findViewById(R.id.author);
         tvTitulo = findViewById(R.id.title);
         tvFecha = findViewById(R.id.publishedDate);
@@ -87,12 +101,15 @@ public class InfoLibro extends AppCompatActivity {
         tvISBN = findViewById(R.id.isbn);
         tvBooklending = findViewById(R.id.bookLendings);
         btnVolver = findViewById(R.id.btnInfoBookVolver);
-        //Crear el vm
+        bookLendingRepository = new BookLendingRepository();
+
+        // Crear el ViewModel
         InfoLibroVM vm = new ViewModelProvider(this).get(InfoLibroVM.class);
 
-        //Solicitar al repo los datos del libro
+        // Solicitar datos del libro
         vm.getBook(getIntent().getIntExtra(BOOK_ID_EXTRA, 0));
-        //cargar datos en vista cuando lleguen
+
+        // Cargar datos en la vista cuando lleguen
         vm.getLibro().observe(this, libro -> {
             if (libro != null) {
                 tvISBN.setText("ISBN: " + libro.getIsbn());
@@ -100,10 +117,77 @@ public class InfoLibro extends AppCompatActivity {
                 tvAutor.setText("Autor: " + libro.getAuthor());
                 tvFecha.setText("Fecha de publicación: " + libro.getPublishedDate());
                 tvDisponible.setText("Disponible: " + libro.isAvailable());
-                tvBooklending.setText("Prestamos: " + libro.getBookLendings());
+                tvBooklending.setText("Préstamos: " + libro.getBookLendings());
             }
+
+            // Obtener los préstamos del libro
+            List<BookLending> bookLendings = libro.getBookLendings();
+            if (bookLendings == null) {
+                bookLendings = new ArrayList<>();
+            }
+
+            // Buscar si el libro está prestado y por quién
+            BookLending currentLending = null;
+            for (BookLending lending : bookLendings) {
+                if (lending.getReturnDate() == null) { // Préstamo activo
+                    currentLending = lending;
+                    break;
+                }
+            }
+
+            // Configurar visibilidad de botones
+            if (libro.isAvailable()) {
+                btnPrestarLibro.setEnabled(true);
+                btnPrestarLibro.setBackgroundColor(getResources().getColor(R.color.green));
+                btnDevolverLibro.setEnabled(false);
+            } else {
+                if (currentLending != null && currentLending.getUserId() == userId) {
+                    btnDevolverLibro.setEnabled(true);
+                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.green));
+                } else {
+                    btnDevolverLibro.setEnabled(false);
+                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.mint_green));
+                }
+            }
+
+            // Acciones de los botones
+            btnPrestarLibro.setOnClickListener(v -> {
+                Toast.makeText(this, "Escanea el código QR del libro", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, ScannerActivity.class);
+                intent.putExtra("BOOK_ID", libro.getId());
+                intent.putExtra(USER_ID_EXTRA, userId);
+                startActivityForResult(intent, 1);
+            });
+
+            btnDevolverLibro.setOnClickListener(v -> {
+                bookLendingRepository.returnBook(libro.getId(), new BookRepository.ApiCallback<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        Toast.makeText(InfoLibro.this, "Libro devuelto con éxito", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(InfoLibro.this, InfoLibro.class);
+                        intent.putExtra(USER_ID_EXTRA, userId);
+                        intent.putExtra(BOOK_ID_EXTRA, libro.getId());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(InfoLibro.this, "Error al devolver el libro", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         });
 
         btnVolver.setOnClickListener(v -> finish());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            int bookId = data.getIntExtra("BOOK_ID", 0);
+            String scannedData = data.getStringExtra("SCANNED_DATA");
+            Toast.makeText(this, "Libro prestado con ID: " + bookId + "\nCódigo QR: " + scannedData, Toast.LENGTH_LONG).show();
+        }
     }
 }

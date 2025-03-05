@@ -53,7 +53,7 @@ public interface ApiService {
     Call<BookLending> getLending(@Path("id") int id);
 
     @POST("booklending")
-    Call<BookLending> lendBook(@Body BookLendingForm lending);
+    Call<BookLending> lendBook(@Query("userId") Integer userid, @Query("bookId") Integer bookid);
 
     @PUT("booklending/{id}/return")
     Call<Void> returnBook(@Path("id") int id);
