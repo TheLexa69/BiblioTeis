@@ -19,15 +19,25 @@ import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
 
 import java.util.List;
 
+/**
+ * Actividad principal que maneja el inicio de sesión de los usuarios.
+ * Permite ingresar credenciales y autenticar al usuario para acceder a la aplicación.
+ */
 public class MainActivity extends AppCompatActivity {
 
     EditText etEmail, etContra;
     Button btnLogin;
+    /** Repositorio para gestionar la autenticación de usuarios */
     UserRepository userRepository;
     SharedPreferences sharedPreferences;
     private static final String EMAIL = "logged_email";
     private static final String PASSWORD = "logged_password";
 
+    /**
+     * Método llamado al crear la actividad. Inicializa los componentes de la UI y gestiona el botón de inicio de sesión.
+     *
+     * @param savedInstanceState Estado guardado de la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Método que maneja la autenticación del usuario verificando sus credenciales.
+     *
+     * @param email Correo electrónico ingresado por el usuario.
+     * @param password Contraseña ingresada por el usuario.
+     */
     private void login(String email, String password) {
         userRepository.getUsers(new BookRepository.ApiCallback<List<User>>() {
             @Override

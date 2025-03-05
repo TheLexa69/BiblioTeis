@@ -10,17 +10,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.biblioteisandroid2.R;
 
+/**
+ * ViewHolder para representar un libro en la lista de RecyclerView.
+ * Contiene las vistas necesarias para mostrar la información de un libro.
+ */
 public class BookViewHolder extends RecyclerView.ViewHolder {
 
-    TextView tvTitle;
-    TextView tvAuthor;
-    TextView tvPublishedDate;
-    ImageView bookPicture;
-    Button btnVerInfoLibro;
+    TextView tvTitle;  // Título del libro
+    TextView tvAuthor;  // Autor del libro
+    TextView tvPublishedDate;  // Fecha de publicación del libro
+    ImageView bookPicture;  // Imagen de la portada del libro
+    Button btnVerInfoLibro;  // Botón para ver detalles del libro
 
-    TextView tvExistencias;
-    TextView tvDisponibles;
+    TextView tvExistencias;  // Texto que muestra la cantidad total de existencias
+    TextView tvDisponibles;  // Texto que muestra la cantidad de libros disponibles
 
+    /**
+     * Constructor del ViewHolder.
+     *
+     * @param itemView Vista del elemento en la lista.
+     */
     public BookViewHolder(@NonNull View itemView) {
         super(itemView);
 
@@ -32,6 +41,4 @@ public class BookViewHolder extends RecyclerView.ViewHolder {
         tvExistencias = itemView.findViewById(R.id.tvExistencias);
         tvDisponibles = itemView.findViewById(R.id.tvDisponibles);
     }
-
-
 }

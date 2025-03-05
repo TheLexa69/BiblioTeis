@@ -29,33 +29,43 @@ import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase InfoLibro que muestra información detallada de un libro seleccionado.
+ * Permite realizar acciones como prestar y devolver libros, además de navegar en la aplicación.
+ */
 public class InfoLibro extends AppCompatActivity {
 
+    /** Claves para los extras del intent */
     public static final String BOOK_ID_EXTRA = "id";
     public static final String USER_ID_EXTRA = "userId";
+
+    /** ID del usuario actual */
     private int userId;
+
+    /** Repositorio para gestionar préstamos de libros */
     private BookLendingRepository bookLendingRepository;
 
     // Componentes visuales
-    TextView tvISBN, tvTitulo, tvAutor, tvFecha, tvDisponible, tvBooklending;
-    ImageView ivPortada;
-    Button btnVolver, btnPrestarLibro, btnDevolverLibro;
+    private TextView tvISBN, tvTitulo, tvAutor, tvFecha, tvDisponible, tvBooklending;
+    private ImageView ivPortada;
+    private Button btnVolver, btnPrestarLibro, btnDevolverLibro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_info_libro);
+
+        // Configurar ajustes de ventana
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_info_libro), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // TOOLBAR
+        // Configurar la barra de herramientas (Toolbar)
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -103,7 +113,7 @@ public class InfoLibro extends AppCompatActivity {
         btnVolver = findViewById(R.id.btnInfoBookVolver);
         bookLendingRepository = new BookLendingRepository();
 
-        // Crear el ViewModel
+        // Crear el ViewModel y solicitar información del libro
         InfoLibroVM vm = new ViewModelProvider(this).get(InfoLibroVM.class);
 
         // Solicitar datos del libro
@@ -178,6 +188,7 @@ public class InfoLibro extends AppCompatActivity {
             });
         });
 
+        // Acción para volver a la pantalla anterior
         btnVolver.setOnClickListener(v -> finish());
     }
 
