@@ -103,10 +103,27 @@ public class UsuarioActivity extends AppCompatActivity {
 
     /**
      * Ordena y resalta los libros prestados, destacando aquellos que ya están vencidos.
+     *
+     * La comparación se realiza en base a la fecha de devolución de los libros:
+     * - Devuelve 0 si ambas fechas de devolución son nulas.
+     * - Devuelve 1 si la fecha de devolución del primer libro es nula (lo coloca después).
+     * - Devuelve -1 si la fecha de devolución del segundo libro es nula (lo coloca antes).
+     * - De lo contrario, compara las fechas de devolución de ambos libros.
      */
     private void sortAndHighlightBooks() {
         if (bookLendings != null) {
-            Collections.sort(bookLendings, (b1, b2) -> b1.getReturnDate().compareTo(b2.getReturnDate()));
+            Collections.sort(bookLendings, (b1, b2) -> {
+                if (b1.getReturnDate() == null && b2.getReturnDate() == null) {
+                    return 0;
+                }
+                if (b1.getReturnDate() == null) {
+                    return 1;
+                }
+                if (b2.getReturnDate() == null) {
+                    return -1;
+                }
+                return b1.getReturnDate().compareTo(b2.getReturnDate());
+            });
         }
     }
 
@@ -148,7 +165,10 @@ public class UsuarioActivity extends AppCompatActivity {
         int itemId = item.getItemId();
 
         if (itemId == R.id.inicio_libreria) {
-            startActivity(new Intent(this, Libreria.class));
+
+            Intent intent = new Intent(this, Libreria.class);
+            intent.putExtra("USER_ID", userId);
+            startActivity(intent);
             return true;
         }
 
