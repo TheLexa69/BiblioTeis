@@ -13,16 +13,16 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent">
+        android:backgroundTint="@color/green"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-    </com.google.android.material.appbar.AppBarLayout>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+    </com.google.android.material.appbar.AppBarLayout>
     <!-- Contenedor de datos del usuario -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/userInfoContainer"
@@ -113,5 +113,19 @@
         android:nestedScrollingEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/borrowedBooksLabel"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/noBooksMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No hay libros prestados"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/borrowedBooksLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

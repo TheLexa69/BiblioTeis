@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
             login(email, password);
         });
-
     }
 
     private void login(String email, String password) {
