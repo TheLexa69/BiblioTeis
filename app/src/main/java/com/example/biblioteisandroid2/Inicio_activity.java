@@ -11,15 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.biblioteisandroid2.API.models.Book;
-import com.example.biblioteisandroid2.API.repository.BookRepository;
 import com.example.biblioteisandroid2.Componentes.Inicio.InicioBookAdapter;
-import com.example.biblioteisandroid2.Componentes.Libreria.BookAdapter;
 import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
-import com.example.biblioteisandroid2.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class Inicio_activity extends AppCompatActivity {
@@ -47,11 +42,11 @@ public class Inicio_activity extends AppCompatActivity {
             Log.e("Libreria", "No se ha proporcionado un ID de usuario");
         }
 
-
         recyclerViewRecommended = findViewById(R.id.recyclerViewRecommended);
         recyclerViewRecommended.setLayoutManager(new LinearLayoutManager(this));
 
         setupButtonLibreria();
+        setupButtonUsuario();  // Configuramos el botón de Usuario
 
         // Lista de libros hardcodeados
         bookList = new ArrayList<>();
@@ -94,6 +89,20 @@ public class Inicio_activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Inicio_activity.this, Libreria.class);
                 Log.d("Inicio_activity", "Enviando a Libreria -> User ID: " + userId);
+                intent.putExtra("USER_ID", userId);
+                startActivity(intent);
+            }
+        });
+    }
+
+    // Nuevo método para configurar el botón "Usuario"
+    private void setupButtonUsuario() {
+        Button buttonUsuario = findViewById(R.id.buttonUsuario);
+        buttonUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Inicio_activity.this, UsuarioActivity.class);
+                Log.d("Inicio_activity", "Enviando a UsuarioActivity -> User ID: " + userId);
                 intent.putExtra("USER_ID", userId);
                 startActivity(intent);
             }
