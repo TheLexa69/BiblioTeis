@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (userId != -1) {
                     Toast.makeText(MainActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, Libreria.class);
+                    Intent intent = new Intent(MainActivity.this, Inicio_activity.class);
                     intent.putExtra("USER_ID", userId);
                     startActivity(intent);
                 } else {
