@@ -3,6 +3,7 @@ package com.example.biblioteisandroid2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -43,50 +44,60 @@ public class MainActivity extends AppCompatActivity {
                     .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                     .build();
 
-            sharedPreferences = EncryptedSharedPreferences.create(
-                    this,
-                    "secure_prefs",
-                    masterKey,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        btnLogin.setOnClickListener(v -> {
+            // Tomamos los valores reales del EditText
+            String email = etEmail.getText().toString().trim();
+            String password = etContra.getText().toString().trim();
 
-        btnLogin.setOnClickListener(v -> login("alice@example.com", "hashedpassword1"));
+            // Si están vacíos, usamos valores por defecto
+            if (email.isEmpty()) email = "alice@example.com";
+            if (password.isEmpty()) password = "hashedpassword1";
+
+            Log.d("MainActivity", "Intentando login con: " + email + " - " + password);
+
+            login(email, password);
+        });
+
     }
 
     private void login(String email, String password) {
         userRepository.getUsers(new BookRepository.ApiCallback<List<User>>() {
             @Override
             public void onSuccess(List<User> users) {
-                boolean loginSuccessful = false;
-                for (User user : users) {
-                    if (user.getEmail().equals(email) && user.getPasswordHash().equals(password)) {
-                        loginSuccessful = true;
+                int userId = -1;
 
-                        // Guardar información del usuario en EncryptedSharedPreferences
-                        sharedPreferences.edit()
-                                .putString(EMAIL, user.getEmail())
-                                .putString(PASSWORD, user.getPasswordHash())
-                                .apply();
+                Log.d("MainActivity", "Usuarios obtenidos: " + users.size());
+
+                for (User user : users) {
+                    Log.d("MainActivity", "Verificando: " + user.getEmail() + " - " + user.getPasswordHash());
+
+                    // Eliminamos espacios y aseguramos coincidencia exacta
+                    if (user.getEmail().trim().equalsIgnoreCase(email.trim()) &&
+                            user.getPasswordHash().trim().equals(password.trim())) {
+
+                        userId = user.getId();
+                        Log.d("MainActivity", "Usuario encontrado: " + userId);
                         break;
                     }
                 }
 
-                if (loginSuccessful) {
+                if (userId != -1) {
                     Toast.makeText(MainActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, Libreria.class));
+                    Intent intent = new Intent(MainActivity.this, Inicio_activity.class);
+                    intent.putExtra("USER_ID", userId);
+                    startActivity(intent);
                 } else {
+                    Log.d("MainActivity", "Login incorrecto");
                     Toast.makeText(MainActivity.this, "Login incorrecto", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Toast.makeText(MainActivity.this, "Error fetching users", Toast.LENGTH_SHORT).show();
+                Log.e("MainActivity", "Error al obtener usuarios", t);
+                Toast.makeText(MainActivity.this, "Error al obtener usuarios", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }
