@@ -37,7 +37,7 @@ public class InfoLibro extends AppCompatActivity {
 
     /** Claves para los extras del intent */
     public static final String BOOK_ID_EXTRA = "id";
-    public static final String USER_ID_EXTRA = "userId";
+    public static final String USER_ID_EXTRA = "USER_ID";
 
     /** ID del usuario actual */
     private int userId;
@@ -85,6 +85,7 @@ public class InfoLibro extends AppCompatActivity {
                     Toast.makeText(InfoLibro.this, "Librería", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(InfoLibro.this, Libreria.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra(USER_ID_EXTRA, userId);
                     startActivity(intent);
                     return true;
                 }
@@ -194,8 +195,12 @@ public class InfoLibro extends AppCompatActivity {
             });
         });
 
-        // Acción para volver a la pantalla anterior
-        btnVolver.setOnClickListener(v -> finish());
+        btnVolver.setOnClickListener(v -> {
+            Intent intent = new Intent(InfoLibro.this, Libreria.class);
+            intent.putExtra(USER_ID_EXTRA, userId);
+            Toast.makeText(this, "Usuario con id: " + userId, Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+        });
     }
 
     /**

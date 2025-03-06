@@ -4,6 +4,7 @@
     android:id="@+id/main_libreria"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Componentes.Libreria.Libreria">
 
     <androidx.core.widget.NestedScrollView
@@ -31,144 +32,164 @@
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            <!-- Filtros -->
             <TextView
-                android:id="@+id/textViewAutor"
+                android:id="@+id/toggleFilters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginTop="5dp"
-                android:text="Autor" />
-
-            <EditText
-                android:id="@+id/editTextAutor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                android:hint="Buscar por autor" />
-
-            <TextView
-                android:id="@+id/textViewTitulo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginTop="10dp"
-                android:text="Título" />
-
-            <EditText
-                android:id="@+id/editTextTitulo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                android:hint="Buscar por título" />
-
-            <TextView
-                android:id="@+id/textViewISBN"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginTop="10dp"
-                android:text="ISBN" />
-
-            <EditText
-                android:id="@+id/editTextISBN"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                android:hint="Buscar por ISBN" />
-
-            <TextView
-                android:id="@+id/textViewFecha"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Fecha de publicación (YYYY-MM-DD)"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_margin="16dp"
+                android:background="@android:color/darker_gray"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Mostrar filtros"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/filtersContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="50dp">
+                android:orientation="vertical"
+                android:visibility="gone">
+                <!-- Filtros -->
+                <TextView
+                    android:id="@+id/textViewAutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Autor" />
+
+                <EditText
+                    android:id="@+id/editTextAutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:hint="Buscar por autor" />
 
                 <TextView
-                    android:id="@+id/editTextFecha"
-                    android:layout_width="0dp"
+                    android:id="@+id/textViewTitulo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:drawable/edit_text"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:hint="Filtrar por fecha"
-                    android:padding="10dp" />
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Título" />
 
-                <ImageView
-                    android:id="@+id/imageViewDatePicker"
+                <EditText
+                    android:id="@+id/editTextTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:hint="Buscar por título" />
+
+                <TextView
+                    android:id="@+id/textViewISBN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="ISBN" />
+
+                <EditText
+                    android:id="@+id/editTextISBN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:hint="Buscar por ISBN" />
+
+                <TextView
+                    android:id="@+id/textViewFecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Fecha de publicación (YYYY-MM-DD)" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/editTextFecha"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:drawable/edit_text"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="Filtrar por fecha"
+                        android:padding="10dp" />
+
+                    <ImageView
+                        android:id="@+id/imageViewDatePicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:contentDescription="Seleccionar fecha"
+                        android:focusable="true"
+                        android:padding="10dp"
+                        android:src="@android:drawable/ic_menu_today" />
+
+                    <ImageView
+                        android:id="@+id/imageViewResetFecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:contentDescription="Restablecer fecha"
+                        android:focusable="true"
+                        android:padding="10dp"
+                        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/checkBoxDisponibilidad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:contentDescription="Seleccionar fecha"
-                    android:focusable="true"
-                    android:padding="10dp"
-                    android:src="@android:drawable/ic_menu_today" />
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Solo disponibles" />
 
-                <ImageView
-                    android:id="@+id/imageViewResetFecha"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:contentDescription="Restablecer fecha"
-                    android:focusable="true"
-                    android:padding="10dp"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel" />
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonBuscar"
+                        android:layout_width="125dp"
+                        android:layout_height="50dp"
+                        android:backgroundTint="@color/green"
+                        android:text="Buscar"
+                        app:icon="@android:drawable/ic_menu_search"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.293"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageViewResetFilters"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/green"
+                        android:clickable="true"
+                        android:contentDescription="Restablecer filtros"
+                        android:focusable="true"
+                        android:padding="10dp"
+                        android:src="@android:drawable/ic_menu_close_clear_cancel"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.493"
+                        app:layout_constraintStart_toEndOf="@+id/buttonBuscar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@android:drawable/stat_notify_sync"
+                        tools:srcCompat="@android:drawable/ic_popup_sync" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <!--fin filtros-->
             </LinearLayout>
-
-            <CheckBox
-                android:id="@+id/checkBoxDisponibilidad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Solo disponibles"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginTop="10dp"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/buttonBuscar"
-                    android:layout_width="125dp"
-                    android:layout_height="50dp"
-                    android:backgroundTint="@color/green"
-                    android:text="Buscar"
-                    app:icon="@android:drawable/ic_menu_search"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.293"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imageViewResetFilters"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/green"
-                    android:clickable="true"
-                    android:contentDescription="Restablecer filtros"
-                    android:focusable="true"
-                    android:padding="10dp"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.493"
-                    app:layout_constraintStart_toEndOf="@+id/buttonBuscar"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@android:drawable/stat_notify_sync"
-                    tools:srcCompat="@android:drawable/ic_popup_sync" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvContainer"

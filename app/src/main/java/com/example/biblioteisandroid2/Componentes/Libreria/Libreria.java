@@ -13,8 +13,10 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,24 +46,47 @@ import java.util.Locale;
  */
 public class Libreria extends AppCompatActivity {
 
-    /** Campos de entrada para buscar libros por autor, título e ISBN */
+    /**
+     * Campos de entrada para buscar libros por autor, título e ISBN
+     */
     private EditText editTextAutor, editTextTitulo, editTextISBN;
-    /** Campo de entrada para la fecha de publicación */
-    private TextView editTextFecha;
-    /** Checkbox para filtrar por disponibilidad */
+    /**
+     * Campo de entrada para la fecha de publicación
+     */
+    private TextView editTextFecha, toggleFilters;
+    /**
+     * Checkbox para filtrar por disponibilidad
+     */
     private CheckBox checkBoxDisponibilidad;
-    /** Botón para realizar la búsqueda de libros */
+    /**
+     * Botón para realizar la búsqueda de libros
+     */
     private Button buttonBuscar;
-    /** Icono para abrir el selector de fecha */
+    /**
+     * Icono para abrir el selector de fecha
+     */
     private ImageView imageViewDatePicker, imageViewReset, imageViewResetFilter;
-    /** RecyclerView para mostrar la lista de libros */
+    /**
+     * RecyclerView para mostrar la lista de libros
+     */
     private RecyclerView recyclerView;
-    /** Adaptador para gestionar la lista de libros */
+    /**
+     * Adaptador para gestionar la lista de libros
+     */
     private BookAdapter bookAdapter;
-    /** Lista de libros cargados */
+    /**
+     * Lista de libros cargados
+     */
     private List<Book> bookList = new ArrayList<>();
-    /** Lista original de libros para restaurar filtros */
+    /**
+     * Lista original de libros para restaurar filtros
+     */
     private List<Book> originalBookList = new ArrayList<>();
+    /**
+     * Contenedor de filtros
+     */
+    private LinearLayout filtersContainer;
+
 
     /**
      * Método que se ejecuta al crear la actividad.
@@ -84,6 +109,18 @@ public class Libreria extends AppCompatActivity {
             Log.e("Libreria", "No se ha proporcionado un ID de usuario");
         }
 
+        //SISTEMA DE FILTRADO PARA QUE NO OCUPE 3/4 DE LA PANTALLA
+        toggleFilters = findViewById(R.id.toggleFilters);
+        filtersContainer = findViewById(R.id.filtersContainer);
+
+        toggleFilters.setOnClickListener(v -> {
+            if (filtersContainer.getVisibility() == View.VISIBLE) {
+                filtersContainer.setVisibility(View.GONE);
+            } else {
+                filtersContainer.setVisibility(View.VISIBLE);
+            }
+        });
+        //FIN DE SISTEMA DE FILTRADO
 
         editTextAutor = findViewById(R.id.editTextAutor);
         editTextTitulo = findViewById(R.id.editTextTitulo);
