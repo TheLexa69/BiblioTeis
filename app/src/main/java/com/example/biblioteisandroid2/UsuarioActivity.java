@@ -1,6 +1,7 @@
 package com.example.biblioteisandroid2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 import com.example.biblioteisandroid2.API.models.BookLending;
 import com.example.biblioteisandroid2.API.models.User;
@@ -65,12 +68,32 @@ public class UsuarioActivity extends AppCompatActivity {
         userEmailTextView = findViewById(R.id.userEmail);
         dateJoinedTextView = findViewById(R.id.dateJoined);
 
-        // Obtener el ID del usuario
-        userId = getIntent().getIntExtra("USER_ID", -1);
-        if (userId != -1) {
-            loadUserData(userId);
-        } else {
-            Log.e("UsuarioActivity", "No se ha proporcionado un ID de usuario");
+        //ESTE ES EL ANTIGUO METODO        userId = getIntent().getIntExtra("USER_ID", -1); // -1 como valor por defecto
+        //AHORA RECOGE DESDE EL SHAREDPRERENCES
+        try {
+            MasterKey masterKey = new MasterKey.Builder(this)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
+
+            SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
+                    this,
+                    "secure_prefs",
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+
+            userId = sharedPreferences.getInt("USER_ID", -1);
+
+            if (userId != -1) {
+                Log.d("UsuarioActivity", "[Inicio_activity -> UsuarioActivity] ID del usuario obtenido desde SharedPreferences: " + userId);
+                loadUserData(userId);
+            } else {
+                Log.e("UsuarioActivity", "[Inicio_activity -> UsuarioActivity] No se encontró un ID de usuario en SharedPreferences");
+            }
+
+        } catch (Exception e) {
+            Log.e("UsuarioActivity", "Error al recuperar SharedPreferences", e);
         }
     }
 
@@ -168,7 +191,7 @@ public class UsuarioActivity extends AppCompatActivity {
         if (itemId == R.id.inicio_libreria) {
 
             Intent intent = new Intent(this, Libreria.class);
-            intent.putExtra("USER_ID", userId);
+//            intent.putExtra("USER_ID", userId);
             startActivity(intent);
             return true;
         }

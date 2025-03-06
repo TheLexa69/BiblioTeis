@@ -1,6 +1,7 @@
  package com.example.biblioteisandroid2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +21,8 @@ import androidx.core.view.MenuProvider;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 import com.example.biblioteisandroid2.API.models.BookLending;
 import com.example.biblioteisandroid2.API.repository.BookLendingRepository;
@@ -62,6 +65,38 @@ public class InfoLibro extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_info_libro);
 
+
+        //ESTE ES EL ANTIGUO METODO        userId = getIntent().getIntExtra("USER_ID", -1); // -1 como valor por defecto
+        //AHORA RECOGE DESDE EL SHAREDPRERENCES
+        try {
+            MasterKey masterKey = new MasterKey.Builder(this)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
+
+            SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
+                    this,
+                    "secure_prefs",
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+
+            userId = sharedPreferences.getInt("USER_ID", -1);
+
+            if (userId != -1) {
+                Log.d("InfoLibro", "ID del usuario obtenido desde SharedPreferences: " + userId);
+            } else {
+                Log.e("InfoLibro", "No se encontró un ID de usuario en SharedPreferences");
+            }
+
+        } catch (Exception e) {
+            Log.e("Libreria", "Error al recuperar SharedPreferences", e);
+        }
+
+
+
+
+
         // Configurar ajustes de ventana
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_info_libro), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -85,7 +120,7 @@ public class InfoLibro extends AppCompatActivity {
                     Toast.makeText(InfoLibro.this, "Librería", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(InfoLibro.this, Libreria.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.putExtra(USER_ID_EXTRA, userId);
+//                    intent.putExtra(USER_ID_EXTRA, userId);
                     startActivity(intent);
                     return true;
                 }
@@ -99,14 +134,9 @@ public class InfoLibro extends AppCompatActivity {
                 return false;
             }
         });
+        //FIN BARRA DE TAREAS
 
-        // Obtener ID del usuario logueado
-        userId = getIntent().getIntExtra(USER_ID_EXTRA, -1);
-        if (userId == -1) {
-            Log.e("InfoLibro", "No se ha proporcionado un ID de usuario");
-        } else {
-            Log.d("InfoLibro", "ID del usuario: " + userId);
-        }
+
 
         // Inicializar componentes visuales
         btnPrestarLibro = findViewById(R.id.buttonPrestarLibro);
@@ -172,7 +202,7 @@ public class InfoLibro extends AppCompatActivity {
                 Toast.makeText(this, "Escanea el código QR del libro", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, ScannerActivity.class);
                 intent.putExtra("BOOK_ID", libro.getId());
-                intent.putExtra(USER_ID_EXTRA, userId);
+//                intent.putExtra(USER_ID_EXTRA, userId);
                 startActivityForResult(intent, 1);
             });
 
@@ -182,7 +212,7 @@ public class InfoLibro extends AppCompatActivity {
                     public void onSuccess(Boolean result) {
                         Toast.makeText(InfoLibro.this, "Libro devuelto con éxito", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(InfoLibro.this, InfoLibro.class);
-                        intent.putExtra(USER_ID_EXTRA, userId);
+//                        intent.putExtra(USER_ID_EXTRA, userId);
                         intent.putExtra(BOOK_ID_EXTRA, libro.getId());
                         startActivity(intent);
                     }
@@ -197,7 +227,7 @@ public class InfoLibro extends AppCompatActivity {
 
         btnVolver.setOnClickListener(v -> {
             Intent intent = new Intent(InfoLibro.this, Libreria.class);
-            intent.putExtra(USER_ID_EXTRA, userId);
+//            intent.putExtra(USER_ID_EXTRA, userId);
             Toast.makeText(this, "Usuario con id: " + userId, Toast.LENGTH_SHORT).show();
             startActivity(intent);
         });

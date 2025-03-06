@@ -1,6 +1,7 @@
 package com.example.biblioteisandroid2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 import com.example.biblioteisandroid2.API.models.BookLendingForm;
 import com.example.biblioteisandroid2.API.repository.BookLendingRepository;
@@ -38,13 +41,36 @@ public class ScannerActivity extends AppCompatActivity {
 
         bookLendingRepository = new BookLendingRepository();
 
-        // Recoger el userId del Intent
-        userId = getIntent().getIntExtra(InfoLibro.USER_ID_EXTRA, -1);
-        if (userId == -1) {
-            Toast.makeText(this, "No se ha proporcionado un ID de usuario", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
+        //ESTE ES EL ANTIGUO METODO        userId = getIntent().getIntExtra("USER_ID", -1); // -1 como valor por defecto
+        //AHORA RECOGE DESDE EL SHAREDPRERENCES
+        try {
+            MasterKey masterKey = new MasterKey.Builder(this)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
+
+            SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
+                    this,
+                    "secure_prefs",
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+
+            userId = sharedPreferences.getInt("USER_ID", -1);
+
+            if (userId != -1) {
+                Log.d("ScannerActivity", "[InfoLibro -> ScannerActivity] ID del usuario obtenido desde SharedPreferences: " + userId);
+            } else {
+                Log.e("ScannerActivity", "[InfoLibro -> ScannerActivity] No se encontró un ID de usuario en SharedPreferences");
+                Toast.makeText(this, "No se ha proporcionado un ID de usuario", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+
+        } catch (Exception e) {
+            Log.e("Libreria", "Error al recuperar SharedPreferences", e);
         }
+
 
         // Iniciar el escaneo del código QR
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
@@ -94,7 +120,7 @@ public class ScannerActivity extends AppCompatActivity {
                         }
                         Intent intent = new Intent(ScannerActivity.this, InfoLibro.class);
                         intent.putExtra(InfoLibro.BOOK_ID_EXTRA, bookId);
-                        intent.putExtra(InfoLibro.USER_ID_EXTRA, userId);
+//                        intent.putExtra(InfoLibro.USER_ID_EXTRA, userId);
                         startActivity(intent);
                     }
 

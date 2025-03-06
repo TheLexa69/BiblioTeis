@@ -2,6 +2,7 @@ package com.example.biblioteisandroid2.Componentes.Libreria;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +27,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 import com.example.biblioteisandroid2.API.models.Book;
 import com.example.biblioteisandroid2.API.repository.BookRepository;
@@ -86,7 +89,10 @@ public class Libreria extends AppCompatActivity {
      * Contenedor de filtros
      */
     private LinearLayout filtersContainer;
-
+    /**
+     * ID del usuario actual
+     */
+    private int userId;
 
     /**
      * Método que se ejecuta al crear la actividad.
@@ -102,11 +108,31 @@ public class Libreria extends AppCompatActivity {
         setContentView(R.layout.activity_libreria);
 
         // Inicializar componentes
-        int userId = getIntent().getIntExtra("USER_ID", -1); // -1 como valor por defecto
-        if (userId != -1) {
-            Log.d("Libreria", "ID del usuario recibido: " + userId);
-        } else {
-            Log.e("Libreria", "No se ha proporcionado un ID de usuario");
+        //ESTE ES EL ANTIGUO METODO        userId = getIntent().getIntExtra("USER_ID", -1); // -1 como valor por defecto
+        //AHORA RECOGE DESDE EL SHAREDPRERENCES
+        try {
+            MasterKey masterKey = new MasterKey.Builder(this)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
+
+            SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
+                    this,
+                    "secure_prefs",
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+
+            userId = sharedPreferences.getInt("USER_ID", -1);
+
+            if (userId != -1) {
+                Log.d("Libreria", "ID del usuario obtenido desde SharedPreferences: " + userId);
+            } else {
+                Log.e("Libreria", "No se encontró un ID de usuario en SharedPreferences");
+            }
+
+        } catch (Exception e) {
+            Log.e("Libreria", "Error al recuperar SharedPreferences", e);
         }
 
         //SISTEMA DE FILTRADO PARA QUE NO OCUPE 3/4 DE LA PANTALLA

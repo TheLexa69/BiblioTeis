@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String EMAIL = "logged_email";
     private static final String PASSWORD = "logged_password";
+    private static final String USER_ID = "USER_ID";
     private EditText etEmail, etContra;
     private Button btnLogin;
     private UserRepository userRepository;
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         etEmail = findViewById(R.id.etEmail);
         etContra = findViewById(R.id.etContra);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
                         usuarioAcreditado = user;
                         userId = user.getId();
-                        Log.d("MainActivity", "Usuario encontrado: " + userId);
+                        Log.d("MainActivity", "Usuario encontrado: " + usuarioAcreditado);
                         break;
                     }
                 }
@@ -113,15 +113,16 @@ public class MainActivity extends AppCompatActivity {
                 if (userId != -1) {
                     Toast.makeText(MainActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, Inicio_activity.class);
-                    intent.putExtra("USER_ID", userId);
+//                    intent.putExtra("USER_ID", userId);
                     startActivity(intent);
 
                     // Guardar información del usuario en EncryptedSharedPreferences
                     sharedPreferences.edit()
                             .putString(EMAIL, usuarioAcreditado.getEmail())
                             .putString(PASSWORD, usuarioAcreditado.getPasswordHash())
+                            .putInt(USER_ID, usuarioAcreditado.getId())
                             .apply();
-
+                    Log.d("MainActivity", "Datos guardados en SharedPreferences: " + sharedPreferences.getString(EMAIL, "No Email") + " - " + sharedPreferences.getString(PASSWORD, "No Password") + " - " + sharedPreferences.getInt(String.valueOf(USER_ID), -1));
 
                 } else {
                     Log.d("MainActivity", "Login incorrecto");
