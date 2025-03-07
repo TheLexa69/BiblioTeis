@@ -58,4 +58,17 @@ public class BookLending {
 
     public User getUser() {return user;}
     public void setUser(User user) {this.user = user;}
+
+    @Override
+    public String toString() {
+        return "BookLending{" +
+                "id=" + id +
+                ", bookId=" + bookId +
+                ", userId=" + userId +
+                ", lendDate='" + lendDate + '\'' +
+                ", returnDate='" + returnDate + '\'' +
+                ", user=" + user +
+                ", book=" + book +
+                '}';
+    }
 }
