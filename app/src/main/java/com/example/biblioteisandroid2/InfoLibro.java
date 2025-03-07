@@ -199,6 +199,13 @@ public class InfoLibro extends AppCompatActivity {
                     break;
                 }
             }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate fechaEntrega = LocalDate.parse(fechaFormateada, formatter).plusMonths(1);
+            String formattedFechaEntrega = fechaEntrega.format(formatter);
+            Log.d("InfoLibro", "Fecha de entrega: " + formattedFechaEntrega);
+            Log.d("InfoLibro", "=====================================: " + fechaFormateada);
+            Log.d("InfoLibro", "Fecha de entrega: " + fechaEntrega);
+            Log.d("InfoLibro", "Fecha actual: " + fechaFormateada);
 
             // Configurar visibilidad de botones
             if (libro.isAvailable()) {
@@ -212,12 +219,15 @@ public class InfoLibro extends AppCompatActivity {
                     btnDevolverLibro.setEnabled(true);
                     btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.green));
 
-                    LocalDate fechaEntrega = LocalDate.parse(fechaFormateada, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
                     if (LocalDate.now().isAfter(fechaEntrega)) {
                         tvBooklending.setText("El libro que tomaste prestado está atrasado para entrega.");
                     }
-                    tvBooklending.setText("Tienes hasta el dia " + fechaFormateada + " para entregar el libro.");
-                    
+
+                    if (ChronoUnit.DAYS.between(LocalDate.now(), fechaEntrega) < 15) {
+                        tvBooklending.setTextColor(getResources().getColor(R.color.red));
+                    }
+                    tvBooklending.setText("Tienes hasta el dia " + formattedFechaEntrega + " para entregar el libro.");
 
                 } else {
                     btnDevolverLibro.setEnabled(false);
