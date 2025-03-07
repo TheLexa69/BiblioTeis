@@ -4,6 +4,7 @@
     android:id="@+id/main_libreria"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gris"
     android:orientation="vertical"
     tools:context=".Componentes.Libreria.Libreria">
 
@@ -37,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:background="@android:color/darker_gray"
+                android:background="@color/azulito"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Mostrar filtros"

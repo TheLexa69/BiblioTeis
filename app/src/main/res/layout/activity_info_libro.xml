@@ -5,6 +5,7 @@
     android:id="@+id/activity_info_libro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gris"
     tools:context=".InfoLibro">
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
