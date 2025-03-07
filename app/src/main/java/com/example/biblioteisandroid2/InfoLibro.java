@@ -212,7 +212,13 @@ public class InfoLibro extends AppCompatActivity {
                     btnDevolverLibro.setEnabled(true);
                     btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.green));
 
-                    tvBooklending.setText("Tienes hasta el dia " + fechaFormateada + "para entregar el libro.");
+                    LocalDate fechaEntrega = LocalDate.parse(fechaFormateada, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                    if (LocalDate.now().isAfter(fechaEntrega)) {
+                        tvBooklending.setText("El libro que tomaste prestado está atrasado para entrega.");
+                    }
+                    tvBooklending.setText("Tienes hasta el dia " + fechaFormateada + " para entregar el libro.");
+                    
+
                 } else {
                     btnDevolverLibro.setEnabled(false);
                     btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.mint_green));
