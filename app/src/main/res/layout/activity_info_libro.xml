@@ -10,7 +10,7 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/green"
+            android:backgroundTint="@color/azulito"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <androidx.appcompat.widget.Toolbar
@@ -114,8 +114,9 @@
             android:id="@+id/btnInfoBookVolver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/green"
+            android:backgroundTint="@color/gris"
             android:text="Volver"
+            android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -135,7 +136,7 @@
                     android:id="@+id/buttonPrestarLibro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/mint_green"
+                    android:backgroundTint="@color/gris"
                     android:enabled="false"
                     android:text="Prestar libro" />
 
@@ -143,7 +144,7 @@
                     android:id="@+id/buttonDevolverLibro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/mint_green"
+                    android:backgroundTint="@color/gris"
                     android:enabled="false"
                     android:text="Devolver libro" />
         </LinearLayout>
