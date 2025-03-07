@@ -29,6 +29,9 @@ import com.example.biblioteisandroid2.API.repository.BookLendingRepository;
 import com.example.biblioteisandroid2.API.repository.BookRepository;
 import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +55,7 @@ public class InfoLibro extends AppCompatActivity {
     private TextView tvISBN, tvTitulo, tvAutor, tvFecha, tvDisponible, tvBooklending;
     private ImageView ivPortada;
     private Button btnVolver, btnPrestarLibro, btnDevolverLibro;
-
+    private String fechaFormateada;
     /**
      * Método que se ejecuta al crear la actividad.
      * Configura la interfaz de usuario, inicializa componentes y carga datos del libro.
@@ -164,14 +167,29 @@ public class InfoLibro extends AppCompatActivity {
                 tvAutor.setText("Autor: " + libro.getAuthor());
                 tvFecha.setText("Fecha de publicación: " + libro.getPublishedDate());
                 tvDisponible.setText("Disponible: " + libro.isAvailable());
-                tvBooklending.setText("Préstamos: " + libro.getBookLendings());
+//                tvBooklending.setText("Préstamos: " + libro.getBookLendings());
             }
+
+            Log.d("InfoLibro", "Libro: " + libro);
 
             // Obtener los préstamos del libro
             List<BookLending> bookLendings = libro.getBookLendings();
+            if (bookLendings != null) {
+                for (BookLending lending : bookLendings) {
+                    Log.d("InfoLibro", "Fecha de préstamo: " + lending.getLendDate());
+                    LocalDate lendDate = LocalDate.parse(lending.getLendDate().substring(0, 10));
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    fechaFormateada = lendDate.format(formatter);
+                    Log.d("InfoLibro", "Fecha de préstamo formateada: " + fechaFormateada);
+                }
+            } else {
+                Log.d("InfoLibro", "No hay préstamos para este libro.");
+            }
+
             if (bookLendings == null) {
                 bookLendings = new ArrayList<>();
             }
+
 
             // Buscar si el libro está prestado y por quién
             BookLending currentLending = null;
@@ -187,13 +205,19 @@ public class InfoLibro extends AppCompatActivity {
                 btnPrestarLibro.setEnabled(true);
                 btnPrestarLibro.setBackgroundColor(getResources().getColor(R.color.green));
                 btnDevolverLibro.setEnabled(false);
+                tvBooklending.setText("El libro está disponible y puede ser prestado");
+
             } else {
                 if (currentLending != null && currentLending.getUserId() == userId) {
                     btnDevolverLibro.setEnabled(true);
                     btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.green));
+
+                    tvBooklending.setText("Tienes hasta el dia " + fechaFormateada + "para entregar el libro.");
                 } else {
                     btnDevolverLibro.setEnabled(false);
                     btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.mint_green));
+
+                    tvBooklending.setText("Libro prestado hasta el dia " + fechaFormateada + ", perdonen las molestias!");
                 }
             }
 
