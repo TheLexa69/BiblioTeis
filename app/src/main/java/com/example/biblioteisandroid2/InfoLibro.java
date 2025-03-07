@@ -203,14 +203,14 @@ public class InfoLibro extends AppCompatActivity {
             // Configurar visibilidad de botones
             if (libro.isAvailable()) {
                 btnPrestarLibro.setEnabled(true);
-                btnPrestarLibro.setBackgroundColor(getResources().getColor(R.color.green));
+                btnPrestarLibro.setBackgroundColor(getResources().getColor(R.color.azulito));
                 btnDevolverLibro.setEnabled(false);
                 tvBooklending.setText("El libro está disponible y puede ser prestado");
 
             } else {
                 if (currentLending != null && currentLending.getUserId() == userId) {
                     btnDevolverLibro.setEnabled(true);
-                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.green));
+                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.azulito));
 
                     LocalDate fechaEntrega = LocalDate.parse(fechaFormateada, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                     if (LocalDate.now().isAfter(fechaEntrega)) {
@@ -221,7 +221,7 @@ public class InfoLibro extends AppCompatActivity {
 
                 } else {
                     btnDevolverLibro.setEnabled(false);
-                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.mint_green));
+                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.azulito));
 
                     tvBooklending.setText("Libro prestado hasta el dia " + fechaFormateada + ", perdonen las molestias!");
                 }

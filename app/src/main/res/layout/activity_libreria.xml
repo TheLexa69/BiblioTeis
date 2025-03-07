@@ -20,7 +20,7 @@
                 android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/green"
+                android:backgroundTint="@color/azulito"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <androidx.appcompat.widget.Toolbar
@@ -160,7 +160,7 @@
                         android:id="@+id/buttonBuscar"
                         android:layout_width="125dp"
                         android:layout_height="50dp"
-                        android:backgroundTint="@color/green"
+                        android:backgroundTint="@color/azulito"
                         android:text="Buscar"
                         app:icon="@android:drawable/ic_menu_search"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -173,7 +173,7 @@
                         android:id="@+id/imageViewResetFilters"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/green"
+                        android:background="@color/azulito"
                         android:clickable="true"
                         android:contentDescription="Restablecer filtros"
                         android:focusable="true"
