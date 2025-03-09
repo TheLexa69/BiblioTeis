@@ -3,6 +3,7 @@ package com.example.biblioteisandroid2.Componentes.Usuario;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.example.biblioteisandroid2.InfoLibro;
 import com.example.biblioteisandroid2.R;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -105,9 +107,21 @@ public class BookLendingAdapter extends RecyclerView.Adapter<BookLendingViewHold
      */
     private String formatDate(String dateString) {
         if (dateString == null || dateString.isEmpty()) {
+            Log.d("BookLendingAdapter", "Date string is null or empty");
             return "No disponible";
         }
-        return dateString;
+        try {
+            Log.d("BookLendingAdapter", "Parsing date string: " + dateString);
+            LocalDateTime dateTime = LocalDateTime.parse(dateString);
+            LocalDate date = dateTime.toLocalDate();
+            DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault());
+            String formattedDate = date.format(outputFormat);
+            Log.d("BookLendingAdapter", "Formatted date: " + formattedDate);
+            return formattedDate;
+        } catch (Exception e) {
+            Log.e("BookLendingAdapter", "Error parsing date string: " + dateString, e);
+            return "Formato de fecha inválido";
+        }
     }
 
     /**
