@@ -21,7 +21,8 @@
                 android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/azulito"
+                android:backgroundTint="@color/azulon"
+
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <androidx.appcompat.widget.Toolbar
@@ -162,6 +163,7 @@
                         android:layout_width="125dp"
                         android:layout_height="50dp"
                         android:backgroundTint="@color/azulito"
+
                         android:text="Buscar"
                         app:icon="@android:drawable/ic_menu_search"
                         app:layout_constraintBottom_toBottomOf="parent"
