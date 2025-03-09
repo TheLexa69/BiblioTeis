@@ -28,7 +28,11 @@ import com.example.biblioteisandroid2.Inicio_activity;
 import com.example.biblioteisandroid2.MainActivity;
 import com.example.biblioteisandroid2.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Actividad que muestra la información del usuario y sus libros prestados.
@@ -58,9 +62,21 @@ public class UsuarioActivity extends AppCompatActivity {
         // Configurar observadores para actualizar la UI en tiempo real
         usuarioViewModel.getUserLiveData().observe(this, user -> {
             if (user != null) {
+                String dateString = user.getDateJoined(); // This returns the date as a String
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // Adjust the format as needed
+                SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                String formattedDate = null;
+                try {
+                    Date dateJoined = inputFormat.parse(dateString); // Parse the String to a Date
+                    formattedDate = outputFormat.format(dateJoined); // Format the Date to the desired format
+                    Log.d("UsuarioActivity", "Usuario actualizado: " + formattedDate);
+                } catch (ParseException e) {
+                    Log.e("UsuarioActivity", "Error parsing date: " + dateString, e);
+                }
+
                 userNameTextView.setText(user.getName());
                 userEmailTextView.setText(user.getEmail());
-                dateJoinedTextView.setText(user.getDateJoined());
+                dateJoinedTextView.setText(formattedDate);
                 setupRecyclerView(user.getBookLendings());
             }
         });
