@@ -24,6 +24,13 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </com.google.android.material.appbar.AppBarLayout>
+<!--    <Spinner-->
+<!--        android:id="@+id/spinner"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/appBarLayout"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
+
     <!-- Contenedor de datos del usuario -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/userInfoContainer"
@@ -33,6 +40,9 @@
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+        <!-- Cambiar por esto para el spinner-->
+<!--    app:layout_constraintTop_toBottomOf="@id/spinner"-->
+
 
         <TextView
             android:id="@+id/userNameLabel"

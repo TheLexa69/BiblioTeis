@@ -8,6 +8,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ import com.example.biblioteisandroid2.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -105,6 +109,39 @@ public class UsuarioActivity extends AppCompatActivity {
                 return manejarMenuItem(menuItem);
             }
         });
+
+        /* Inicio Spinner */
+            /*Definir*/
+//        Spinner sp = findViewById(R.id.spinner);
+//
+//        ArrayList<String> animalesSpinner = new ArrayList<>();
+//        animalesSpinner.add("Morsa");
+//        animalesSpinner.add("Axolotl");
+//        animalesSpinner.add("Ornitorrinco");
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, animalesSpinner);
+//        sp.setAdapter(adapter);
+//            /*Fin Definir*/
+//            /*Al cambiar opcion*/
+//        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                String selectedItem = (String) parentView.getItemAtPosition(position);
+//                Toast.makeText(UsuarioActivity.this, selectedItem, Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // No hacer nada
+//            }
+//        });
+            //Fin al cambiar opción
+            //Para un boton
+         //      btnMostrarSeleccion.setOnClickListener(v -> {
+        //       String selectedItem = (String) sp.getSelectedItem();
+         //      Toast.makeText(UsuarioActivity.this, "Seleccionado: " + selectedItem, Toast.LENGTH_SHORT).show();
+        //       });
+            //Para un boton
+        /* Fin Spinner */
     }
 
     /**
