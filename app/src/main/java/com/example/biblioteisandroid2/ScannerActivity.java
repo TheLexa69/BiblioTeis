@@ -24,6 +24,7 @@ import com.google.zxing.integration.android.IntentResult;
  */
 public class ScannerActivity extends AppCompatActivity {
 
+    public static final String TIPO = "TIPO";
     /** Repositorio para gestionar el préstamo de libros */
     private BookLendingRepository bookLendingRepository;
     /** ID del usuario que está realizando el escaneo */
@@ -89,7 +90,8 @@ public class ScannerActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
+        int tipo = getIntent().getIntExtra(TIPO, -1);
+        if (result != null && tipo == 0) {
             if (result.getContents() == null) {
                 setResult(RESULT_CANCELED);
                 Toast.makeText(this, "Se ha producido un error al escanear", Toast.LENGTH_SHORT).show();
@@ -135,6 +137,21 @@ public class ScannerActivity extends AppCompatActivity {
                 });
             }
             finish();
+        } else if (result != null) {
+            Log.d("ScannerActivity", "Entrando bien");
+            String scannedData = result.getContents();
+
+            // Obtener el BOOK_ID original
+            int bookId = getIntent().getIntExtra("BOOK_ID", 0);
+            Log.d("ScannerActivity", "BOOK_ID: " + bookId); // Agregar logcat para mostrar el BOOK_ID
+
+            Intent intent = new Intent(ScannerActivity.this, InfoLibro.class);
+            intent.putExtra(InfoLibro.BOOK_ID_EXTRA, bookId); // Mantener el BOOK_ID original
+            intent.putExtra("SCANNED_DATA", scannedData); // Agregar el dato escaneado si es necesario
+
+            // setResult(RESULT_OK, intent);
+            // finish();
+            startActivity(intent);
         }
     }
 }
