@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.biblioteisandroid2.API.models.Book;
 import com.example.biblioteisandroid2.API.models.BookLending;
 import com.example.biblioteisandroid2.InfoLibro;
 import com.example.biblioteisandroid2.R;
@@ -69,13 +71,21 @@ public class BookLendingAdapter extends RecyclerView.Adapter<BookLendingViewHold
 
         // Evitar valores nulos en los textos
         holder.title.setText(bookLending.getBook() != null ? bookLending.getBook().getTitle() : "Título no disponible");
-        holder.loanDate.setText("Fecha de Préstamo: " + formatDate(bookLending.getLendDate()));
-        holder.dueDate.setText("Fecha de Devolución: " + formatDate(bookLending.getReturnDate()));
+        String prestamo = formatDate(bookLending.getLendDate());
+        String devolucion = bookLending.getLendDate() != null
+                ? LocalDateTime.parse(bookLending.getLendDate()).toLocalDate()
+                .plusMonths(1)
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault()))
+                : "No disponible";
+        holder.loanDate.setText("  Fecha de Préstamo: " + prestamo);
+        holder.dueDate.setText("Fecha de Devolución: " + devolucion);
+
         holder.bookImageView.setImageResource(R.drawable.book_1);
 
         // Resaltar si quedan menos de 15 dias para que venza
-        if (isLessThanFifteenDaysUntilDue(bookLending.getReturnDate())) {
-            holder.itemView.setBackgroundColor(Color.RED);
+        if (isLessThanFifteenDaysUntilDue(bookLending.getLendDate())) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.rojo));
+            holder.dueDate.setText("   ¡Vence pronto! " + devolucion);
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
@@ -127,20 +137,24 @@ public class BookLendingAdapter extends RecyclerView.Adapter<BookLendingViewHold
     /**
      * Verifica si quedan menos de 15 días hasta la fecha de devolución.
      *
-     * @param returnDateString La fecha de devolución del libro.
+     * @param lendDateString La fecha de devolución del libro.
      * @return True si quedan menos de 15 días, de lo contrario, false.
      */
-    private boolean isLessThanFifteenDaysUntilDue(String returnDateString) {
-        if (returnDateString == null || returnDateString.isEmpty()) {
+    private boolean isLessThanFifteenDaysUntilDue(String lendDateString) {
+        if (lendDateString == null || lendDateString.isEmpty()) {
             return false;
         }
         try {
-            LocalDate returnDate = LocalDate.parse(returnDateString, dateFormat);
-            long daysUntilDue = ChronoUnit.DAYS.between(LocalDate.now(), returnDate);
-            return daysUntilDue < 15; // Retorna true si quedan menos de 15 días
+            // Parsear la fecha de préstamo con LocalDateTime y extraer LocalDate
+            LocalDate lendDate = LocalDateTime.parse(lendDateString).toLocalDate();
+            LocalDate dueDate = lendDate.plusMonths(1);
+
+            long daysUntilDue = ChronoUnit.DAYS.between(LocalDate.now(), dueDate);
+            return daysUntilDue <= 15;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false; // En caso de error, retornamos false
+            Log.e("BookLendingAdapter", "Error parsing lend date: " + lendDateString, e);
+            return false;
         }
     }
+
 }
