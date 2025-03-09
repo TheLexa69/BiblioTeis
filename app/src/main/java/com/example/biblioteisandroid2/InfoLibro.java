@@ -1,4 +1,4 @@
- package com.example.biblioteisandroid2;
+package com.example.biblioteisandroid2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,14 +41,20 @@ import java.util.List;
  */
 public class InfoLibro extends AppCompatActivity {
 
-    /** Claves para los extras del intent */
+    /**
+     * Claves para los extras del intent
+     */
     public static final String BOOK_ID_EXTRA = "id";
     public static final String USER_ID_EXTRA = "USER_ID";
 
-    /** ID del usuario actual */
+    /**
+     * ID del usuario actual
+     */
     private int userId;
 
-    /** Repositorio para gestionar préstamos de libros */
+    /**
+     * Repositorio para gestionar préstamos de libros
+     */
     private BookLendingRepository bookLendingRepository;
 
     // Componentes visuales
@@ -56,6 +62,7 @@ public class InfoLibro extends AppCompatActivity {
     private ImageView ivPortada;
     private Button btnVolver, btnPrestarLibro, btnDevolverLibro;
     private String fechaFormateada;
+
     /**
      * Método que se ejecuta al crear la actividad.
      * Configura la interfaz de usuario, inicializa componentes y carga datos del libro.
@@ -95,9 +102,6 @@ public class InfoLibro extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("Libreria", "Error al recuperar SharedPreferences", e);
         }
-
-
-
 
 
         // Configurar ajustes de ventana
@@ -140,7 +144,6 @@ public class InfoLibro extends AppCompatActivity {
         //FIN BARRA DE TAREAS
 
 
-
         // Inicializar componentes visuales
         btnPrestarLibro = findViewById(R.id.buttonPrestarLibro);
         btnDevolverLibro = findViewById(R.id.buttonDevolverLibro);
@@ -174,16 +177,34 @@ public class InfoLibro extends AppCompatActivity {
 
             // Obtener los préstamos del libro
             List<BookLending> bookLendings = libro.getBookLendings();
-            if (bookLendings != null) {
+            if (bookLendings != null && !bookLendings.isEmpty()) {
                 for (BookLending lending : bookLendings) {
-                    Log.d("InfoLibro", "Fecha de préstamo: " + lending.getLendDate());
-                    LocalDate lendDate = LocalDate.parse(lending.getLendDate().substring(0, 10));
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    fechaFormateada = lendDate.format(formatter);
-                    Log.d("InfoLibro", "Fecha de préstamo formateada: " + fechaFormateada);
+                    String rawLendDate = lending.getLendDate();  // Obtener la fecha del préstamo
+                    if (rawLendDate != null) {
+                        LocalDate lendDate = LocalDate.parse(rawLendDate.substring(0, 10));
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        fechaFormateada = lendDate.format(formatter);
+                        Log.d("InfoLibro", "Fecha de préstamo formateada: " + fechaFormateada);
+                    } else {
+                        fechaFormateada = null;  // Si no hay fecha, dejamos null
+                        Log.d("InfoLibro", "El préstamo no tiene una fecha de préstamo.");
+                    }
                 }
             } else {
+                fechaFormateada = null;  // No hay préstamos, dejamos null
                 Log.d("InfoLibro", "No hay préstamos para este libro.");
+            }
+
+            LocalDate fechaEntrega = null;
+            String formattedFechaEntrega = null;
+            // Verificamos si la fecha es válida antes de procesarla
+            if (fechaFormateada != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                fechaEntrega = LocalDate.parse(fechaFormateada, formatter).plusMonths(1);
+                formattedFechaEntrega = fechaEntrega.format(formatter);
+                Log.d("InfoLibro", "Fecha de entrega: " + formattedFechaEntrega);
+            } else {
+                Log.d("InfoLibro", "El libro no ha sido prestado nunca.");
             }
 
             if (bookLendings == null) {
@@ -199,13 +220,21 @@ public class InfoLibro extends AppCompatActivity {
                     break;
                 }
             }
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate fechaEntrega = LocalDate.parse(fechaFormateada, formatter).plusMonths(1);
-            String formattedFechaEntrega = fechaEntrega.format(formatter);
-            Log.d("InfoLibro", "Fecha de entrega: " + formattedFechaEntrega);
-            Log.d("InfoLibro", "=====================================: " + fechaFormateada);
-            Log.d("InfoLibro", "Fecha de entrega: " + fechaEntrega);
-            Log.d("InfoLibro", "Fecha actual: " + fechaFormateada);
+            if (fechaFormateada != null && !fechaFormateada.isEmpty()) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                fechaEntrega = LocalDate.parse(fechaFormateada, formatter).plusMonths(1);
+                formattedFechaEntrega = fechaEntrega.format(formatter);
+                Log.d("InfoLibro", "Fecha de entrega: " + formattedFechaEntrega);
+            } else {
+                Log.d("InfoLibro", "No hay una fecha de préstamo válida.");
+            }
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//            LocalDate fechaEntrega = LocalDate.parse(fechaFormateada, formatter).plusMonths(1);
+//            String formattedFechaEntrega = fechaEntrega.format(formatter);
+//            Log.d("InfoLibro", "Fecha de entrega: " + formattedFechaEntrega);
+//            Log.d("InfoLibro", "=====================================: " + fechaFormateada);
+//            Log.d("InfoLibro", "Fecha de entrega: " + fechaEntrega);
+//            Log.d("InfoLibro", "Fecha actual: " + fechaFormateada);
 
             // Configurar visibilidad de botones
             if (libro.isAvailable()) {
@@ -278,8 +307,8 @@ public class InfoLibro extends AppCompatActivity {
      * Muestra un mensaje con el ID del libro prestado y el código QR escaneado.
      *
      * @param requestCode Código de solicitud con el que se inició la actividad.
-     * @param resultCode Código de resultado devuelto por la actividad.
-     * @param data Intent que contiene los datos devueltos por la actividad.
+     * @param resultCode  Código de resultado devuelto por la actividad.
+     * @param data        Intent que contiene los datos devueltos por la actividad.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
