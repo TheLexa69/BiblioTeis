@@ -162,7 +162,7 @@
                         android:id="@+id/buttonBuscar"
                         android:layout_width="125dp"
                         android:layout_height="50dp"
-                        android:backgroundTint="@color/azulito"
+                        android:backgroundTint="@color/azul"
 
                         android:text="Buscar"
                         app:icon="@android:drawable/ic_menu_search"
@@ -176,7 +176,7 @@
                         android:id="@+id/imageViewResetFilters"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/azulito"
+                        android:background="@color/azul"
                         android:clickable="true"
                         android:contentDescription="Restablecer filtros"
                         android:focusable="true"
