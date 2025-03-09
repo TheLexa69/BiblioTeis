@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/mint_green"
-    >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/mint_green">
+
 
     <item
-        android:id="@+id/inicio_libreria"
-        android:title="@string/libreria"
+        android:id="@+id/opcion_inicio"
+        android:title="@string/opcion_inicio"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/opcion_libreria"
+        android:title="@string/opcion_libreria"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/opcion_usuario"
+        android:title="@string/opcion_usuario"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/cerrar_sesion"
         android:title="@string/cerrar_sesion"
-        app:showAsAction="ifRoom" />
-
+        app:showAsAction="never" />
 
 </menu>

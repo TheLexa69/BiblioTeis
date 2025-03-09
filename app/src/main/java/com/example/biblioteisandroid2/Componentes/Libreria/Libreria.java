@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,8 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuProvider;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -32,17 +29,17 @@ import androidx.security.crypto.MasterKey;
 
 import com.example.biblioteisandroid2.API.models.Book;
 import com.example.biblioteisandroid2.API.repository.BookRepository;
+import com.example.biblioteisandroid2.Componentes.Usuario.UsuarioActivity;
+import com.example.biblioteisandroid2.Inicio_activity;
 import com.example.biblioteisandroid2.MainActivity;
 import com.example.biblioteisandroid2.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Actividad principal de la librería, donde los usuarios pueden buscar y filtrar libros.
@@ -190,11 +187,25 @@ public class Libreria extends AppCompatActivity {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.menu_toolbar, menu);
-                menu.findItem(R.id.inicio_libreria).setEnabled(false);
+                menu.findItem(R.id.opcion_libreria).setEnabled(false);
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.opcion_inicio) {
+                    Toast.makeText(Libreria.this, "Inicio", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Libreria.this, Inicio_activity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    return true;
+                }
+                if (menuItem.getItemId() == R.id.opcion_usuario) {
+                    Toast.makeText(Libreria.this, "Perfil de Usuario", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Libreria.this, UsuarioActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    return true;
+                }
                 if (menuItem.getItemId() == R.id.cerrar_sesion) {
                     startActivity(new Intent(Libreria.this, MainActivity.class)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
