@@ -19,7 +19,7 @@
             android:name=".Inicio_activity"
             android:exported="false" />
         <activity
-            android:name=".UsuarioActivity"
+            android:name=".Componentes.Usuario.UsuarioActivity"
             android:exported="false" />
         <activity
             android:name=".InfoLibro"

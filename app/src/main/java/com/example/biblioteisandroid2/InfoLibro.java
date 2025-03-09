@@ -28,6 +28,7 @@ import com.example.biblioteisandroid2.API.models.BookLending;
 import com.example.biblioteisandroid2.API.repository.BookLendingRepository;
 import com.example.biblioteisandroid2.API.repository.BookRepository;
 import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
+import com.example.biblioteisandroid2.Componentes.Usuario.UsuarioActivity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -123,9 +124,24 @@ public class InfoLibro extends AppCompatActivity {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
-                if (id == R.id.inicio_libreria) {
+                if (id == R.id.opcion_libreria) {
                     Toast.makeText(InfoLibro.this, "Librería", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(InfoLibro.this, Libreria.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    intent.putExtra(USER_ID_EXTRA, userId);
+                    startActivity(intent);
+                    return true;
+                }
+                if (id == R.id.opcion_inicio) {
+                    Toast.makeText(InfoLibro.this, "Inicio", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(InfoLibro.this, Inicio_activity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    return true;
+                }
+                if (id == R.id.opcion_usuario) {
+                    Toast.makeText(InfoLibro.this, "Perfil de Usuario", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(InfoLibro.this, UsuarioActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                    intent.putExtra(USER_ID_EXTRA, userId);
                     startActivity(intent);
