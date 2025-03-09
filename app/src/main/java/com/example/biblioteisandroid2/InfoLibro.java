@@ -1,5 +1,7 @@
 package com.example.biblioteisandroid2;
 
+import static com.example.biblioteisandroid2.Componentes.Libreria.BookUtils.transformarFecha;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,6 +34,7 @@ import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
 import com.example.biblioteisandroid2.Componentes.Usuario.UsuarioActivity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -184,9 +187,10 @@ public class InfoLibro extends AppCompatActivity {
                 tvISBN.setText("ISBN: " + libro.getIsbn());
                 tvTitulo.setText("Título: " + libro.getTitle());
                 tvAutor.setText("Autor: " + libro.getAuthor());
-                tvFecha.setText("Fecha de publicación: " + libro.getPublishedDate());
+
+                tvFecha.setText("Fecha de publicación: " + transformarFecha(libro.getPublishedDate()));
+
                 tvDisponible.setText("Disponible: " + libro.isAvailable());
-//                tvBooklending.setText("Préstamos: " + libro.getBookLendings());
             }
 
             Log.d("InfoLibro", "Libro: " + libro);
@@ -197,9 +201,10 @@ public class InfoLibro extends AppCompatActivity {
                 for (BookLending lending : bookLendings) {
                     String rawLendDate = lending.getLendDate();  // Obtener la fecha del préstamo
                     if (rawLendDate != null) {
-                        LocalDate lendDate = LocalDate.parse(rawLendDate.substring(0, 10));
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                        fechaFormateada = lendDate.format(formatter);
+//                        LocalDate lendDate = LocalDate.parse(rawLendDate.substring(0, 10));
+//                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//                        fechaFormateada = lendDate.format(formatter);
+                        fechaFormateada = transformarFecha(rawLendDate);
                         Log.d("InfoLibro", "Fecha de préstamo formateada: " + fechaFormateada);
                     } else {
                         fechaFormateada = null;  // Si no hay fecha, dejamos null
@@ -278,7 +283,7 @@ public class InfoLibro extends AppCompatActivity {
                     btnDevolverLibro.setEnabled(false);
                     btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.azul));
 
-                    tvBooklending.setText("Libro prestado hasta el dia " + fechaFormateada + ", perdonen las molestias!");
+                    tvBooklending.setText("Libro prestado hasta el dia " + formattedFechaEntrega + ", perdonen las molestias!");
                 }
             }
 
@@ -336,4 +341,6 @@ public class InfoLibro extends AppCompatActivity {
             Toast.makeText(this, "Libro prestado con ID: " + bookId + "\nCódigo QR: " + scannedData, Toast.LENGTH_LONG).show();
         }
     }
+
+
 }

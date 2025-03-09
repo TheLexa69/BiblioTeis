@@ -9,5 +9,7 @@
     <color name="azulito">#ADD8E6</color>
     <color name="azulon">#122848</color>
     <color name="azul">#0B4576</color>
+    <color name="rojo">#FF9696</color>
+    <color name="warning">#FFEB3B</color>
 
 </resources>

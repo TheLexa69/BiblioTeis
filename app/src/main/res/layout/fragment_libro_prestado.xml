@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="5dp"
     tools:context=".Libro">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,8 +56,9 @@
             android:id="@+id/btnVerInfoLibro"
             android:layout_width="156dp"
             android:layout_height="41dp"
-            android:text="Ver más..."
+
             android:backgroundTint="@color/azul"
+            android:text="Ver más..."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

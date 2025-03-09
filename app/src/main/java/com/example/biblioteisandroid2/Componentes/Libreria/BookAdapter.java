@@ -69,8 +69,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookViewHolder> {
 
         Book book = books.get(position);
         holder.tvTitle.setText(book.getTitle());
-        holder.tvAuthor.setText(book.getAuthor());
-        holder.tvPublishedDate.setText(String.valueOf(book.getPublishedDate()));
+        holder.tvAuthor.setText("Autor: " + book.getAuthor());
+//        holder.tvPublishedDate.setText(String.valueOf(book.getPublishedDate()));
+        holder.tvPublishedDate.setText("Fecha Publicación: " + BookUtils.transformarFecha(String.valueOf(book.getPublishedDate())));
 
         // Configurar la imagen del libro
         String imageName = "book_" + book.getBookPicture();  // "book_" + ID de la imagen
