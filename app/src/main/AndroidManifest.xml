@@ -16,7 +16,7 @@
         android:theme="@style/Theme.BiblioTeisAndroid2"
         tools:targetApi="31">
         <activity
-            android:name=".Inicio_activity"
+            android:name=".Componentes.Inicio.Inicio_activity"
             android:exported="false" />
         <activity
             android:name=".Componentes.Usuario.UsuarioActivity"

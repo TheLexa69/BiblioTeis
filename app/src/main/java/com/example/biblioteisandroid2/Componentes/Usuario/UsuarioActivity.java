@@ -22,9 +22,8 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.example.biblioteisandroid2.API.models.BookLending;
-import com.example.biblioteisandroid2.API.models.User;
 import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
-import com.example.biblioteisandroid2.Inicio_activity;
+import com.example.biblioteisandroid2.Componentes.Inicio.Inicio_activity;
 import com.example.biblioteisandroid2.MainActivity;
 import com.example.biblioteisandroid2.R;
 

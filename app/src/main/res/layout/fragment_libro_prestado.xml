@@ -58,7 +58,7 @@
             android:layout_width="156dp"
             android:layout_height="41dp"
             android:text="Ver más..."
-            android:backgroundTint="@color/azulito"
+            android:backgroundTint="@color/azul"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

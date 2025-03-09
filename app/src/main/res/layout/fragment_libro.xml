@@ -79,7 +79,7 @@
             android:id="@+id/btnVerInfoLibro"
             android:layout_width="156dp"
             android:layout_height="41dp"
-            android:backgroundTint="@color/azulito"
+            android:backgroundTint="@color/azul"
             android:text="Ver más..."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

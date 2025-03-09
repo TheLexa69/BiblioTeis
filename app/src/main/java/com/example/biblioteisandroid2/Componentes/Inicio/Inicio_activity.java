@@ -1,4 +1,4 @@
-package com.example.biblioteisandroid2;
+package com.example.biblioteisandroid2.Componentes.Inicio;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -20,9 +19,10 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.example.biblioteisandroid2.API.models.Book;
-import com.example.biblioteisandroid2.Componentes.Inicio.InicioBookAdapter;
 import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
 import com.example.biblioteisandroid2.Componentes.Usuario.UsuarioActivity;
+import com.example.biblioteisandroid2.MainActivity;
+import com.example.biblioteisandroid2.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +33,7 @@ public class Inicio_activity extends AppCompatActivity {
     private List<Book> bookList; // Lista para almacenar los libros
     private InicioBookAdapter inicioBookAdapter;
     private int userId;
+    private Button verMas;
 
     /**
      * Método que se ejecuta cuando se crea la actividad.
@@ -74,9 +75,10 @@ public class Inicio_activity extends AppCompatActivity {
         }
         //FIN RECOGER DATOS DESDE SHARED PREFERENCES
 
-
+        // Inicializar recyclerView
         recyclerViewRecommended = findViewById(R.id.recyclerViewRecommended);
         recyclerViewRecommended.setLayoutManager(new LinearLayoutManager(this));
+
 
 
         // Lista de libros hardcodeados
