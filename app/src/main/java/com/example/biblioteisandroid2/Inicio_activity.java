@@ -78,8 +78,6 @@ public class Inicio_activity extends AppCompatActivity {
         recyclerViewRecommended = findViewById(R.id.recyclerViewRecommended);
         recyclerViewRecommended.setLayoutManager(new LinearLayoutManager(this));
 
-        setupButtonLibreria();
-        setupButtonUsuario();  // Configuramos el botón de Usuario
 
         // Lista de libros hardcodeados
         bookList = new ArrayList<>();
@@ -111,40 +109,9 @@ public class Inicio_activity extends AppCompatActivity {
         return book;
     }
 
-    /**
-     * Configura el botón para navegar a la actividad de la librería.
-     * Cuando se hace clic, inicia la actividad Libreria.
-     */
-    private void setupButtonLibreria() {
-        Button buttonLibreria = findViewById(R.id.buttonLibreria);
-        buttonLibreria.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Inicio_activity.this, Libreria.class);
-                Log.d("Inicio_activity", "Enviando a Libreria -> User ID: " + userId);
-//                intent.putExtra("USER_ID", userId);
-                startActivity(intent);
-            }
-        });
-    }
 
-    /**
-     * Configura el botón para navegar a la actividad de usuario.
-     * Cuando se hace clic, inicia la actividad UsuarioActivity.
-     */
-    // Nuevo método para configurar el botón "Usuario"
-    private void setupButtonUsuario() {
-        Button buttonUsuario = findViewById(R.id.buttonUsuario);
-        buttonUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Inicio_activity.this, UsuarioActivity.class);
-                Log.d("Inicio_activity", "Enviando a UsuarioActivity -> User ID: " + userId);
-//                intent.putExtra("USER_ID", userId);
-                startActivity(intent);
-            }
-        });
-    }
+
+
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -152,6 +119,7 @@ public class Inicio_activity extends AppCompatActivity {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.menu_toolbar, menu);
+                menu.findItem(R.id.opcion_inicio).setVisible(false);
             }
 
             @Override
@@ -161,11 +129,18 @@ public class Inicio_activity extends AppCompatActivity {
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                     return true;
                 }
-                if (menuItem.getItemId() == R.id.inicio_libreria) {
+
+                if (menuItem.getItemId() == R.id.opcion_usuario) {
+                    startActivity(new Intent(Inicio_activity.this, UsuarioActivity.class)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    return true;
+                }
+                if (menuItem.getItemId() == R.id.opcion_libreria) {
                     startActivity(new Intent(Inicio_activity.this, Libreria.class)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                     return true;
                 }
+
                 return false;
             }
         });
