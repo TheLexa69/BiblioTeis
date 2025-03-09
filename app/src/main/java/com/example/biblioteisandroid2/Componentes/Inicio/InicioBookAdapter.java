@@ -1,14 +1,20 @@
 package com.example.biblioteisandroid2.Componentes.Inicio;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.biblioteisandroid2.API.models.Book;
 import com.example.biblioteisandroid2.R;
+import com.example.biblioteisandroid2.ScannerActivity;
 
 import java.util.List;
 
@@ -57,6 +63,13 @@ public class InicioBookAdapter extends RecyclerView.Adapter<BookInicioViewHolder
         holder.publishedDateTextView.setText(book.getPublishedDate());
         // Aquí podrías poner una imagen real si tienes una URL o recurso
         holder.bookImageView.setImageResource(R.drawable.book_1);
+        //Para el boton ver mas...
+        holder.btnVerInfoLibro.setOnClickListener(v -> {
+            Toast.makeText(holder.itemView.getContext(), "Escanea el código QR del libro", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(holder.itemView.getContext(), ScannerActivity.class);
+            intent.putExtra("BOOK_ID", book.getId());
+            ((Activity) holder.itemView.getContext()).startActivityForResult(intent, 1);
+      });
     }
 
     /**
@@ -69,5 +82,4 @@ public class InicioBookAdapter extends RecyclerView.Adapter<BookInicioViewHolder
     public int getItemCount() {
         return bookList.size();
     }
-
 }

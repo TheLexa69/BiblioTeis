@@ -287,6 +287,7 @@ public class InfoLibro extends AppCompatActivity {
                 Toast.makeText(this, "Escanea el código QR del libro", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, ScannerActivity.class);
                 intent.putExtra("BOOK_ID", libro.getId());
+                intent.putExtra("TIPO", 0);
 //                intent.putExtra(USER_ID_EXTRA, userId);
                 startActivityForResult(intent, 1);
             });

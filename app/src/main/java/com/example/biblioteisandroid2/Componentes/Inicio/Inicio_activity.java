@@ -33,7 +33,6 @@ public class Inicio_activity extends AppCompatActivity {
     private List<Book> bookList; // Lista para almacenar los libros
     private InicioBookAdapter inicioBookAdapter;
     private int userId;
-    private Button verMas;
 
     /**
      * Método que se ejecuta cuando se crea la actividad.
