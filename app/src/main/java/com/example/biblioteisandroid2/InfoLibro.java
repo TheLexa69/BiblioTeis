@@ -29,6 +29,7 @@ import androidx.security.crypto.MasterKey;
 import com.example.biblioteisandroid2.API.models.BookLending;
 import com.example.biblioteisandroid2.API.repository.BookLendingRepository;
 import com.example.biblioteisandroid2.API.repository.BookRepository;
+import com.example.biblioteisandroid2.Componentes.Inicio.Inicio_activity;
 import com.example.biblioteisandroid2.Componentes.Libreria.Libreria;
 import com.example.biblioteisandroid2.Componentes.Usuario.UsuarioActivity;
 
@@ -162,7 +163,6 @@ public class InfoLibro extends AppCompatActivity {
         });
         //FIN BARRA DE TAREAS
 
-
         // Inicializar componentes visuales
         btnPrestarLibro = findViewById(R.id.buttonPrestarLibro);
         btnDevolverLibro = findViewById(R.id.buttonDevolverLibro);
@@ -260,14 +260,14 @@ public class InfoLibro extends AppCompatActivity {
             // Configurar visibilidad de botones
             if (libro.isAvailable()) {
                 btnPrestarLibro.setEnabled(true);
-                btnPrestarLibro.setBackgroundColor(getResources().getColor(R.color.azulito));
+                btnPrestarLibro.setBackgroundColor(getResources().getColor(R.color.azul));
                 btnDevolverLibro.setEnabled(false);
                 tvBooklending.setText("El libro está disponible y puede ser prestado");
 
             } else {
                 if (currentLending != null && currentLending.getUserId() == userId) {
                     btnDevolverLibro.setEnabled(true);
-                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.azulito));
+                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.azul));
 
 
                     if (LocalDate.now().isAfter(fechaEntrega)) {
@@ -281,7 +281,7 @@ public class InfoLibro extends AppCompatActivity {
 
                 } else {
                     btnDevolverLibro.setEnabled(false);
-                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.azulito));
+                    btnDevolverLibro.setBackgroundColor(getResources().getColor(R.color.azul));
 
                     tvBooklending.setText("Libro prestado hasta el dia " + formattedFechaEntrega + ", perdonen las molestias!");
                 }
@@ -292,6 +292,7 @@ public class InfoLibro extends AppCompatActivity {
                 Toast.makeText(this, "Escanea el código QR del libro", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, ScannerActivity.class);
                 intent.putExtra("BOOK_ID", libro.getId());
+                intent.putExtra("TIPO", 0);
 //                intent.putExtra(USER_ID_EXTRA, userId);
                 startActivityForResult(intent, 1);
             });

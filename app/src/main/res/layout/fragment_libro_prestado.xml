@@ -45,12 +45,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:lineSpacingExtra="4dp"
-            android:maxLines="2"
             android:text="Fecha de Devolución:"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:maxLines="2"
+            android:lineSpacingExtra="4dp"
             app:layout_constraintStart_toEndOf="@+id/bookPicture"
-            app:layout_constraintTop_toBottomOf="@+id/loanDate" />
+            app:layout_constraintTop_toBottomOf="@+id/loanDate"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/btnVerInfoLibro"

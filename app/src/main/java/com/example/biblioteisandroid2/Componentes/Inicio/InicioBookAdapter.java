@@ -1,26 +1,29 @@
 package com.example.biblioteisandroid2.Componentes.Inicio;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.biblioteisandroid2.API.models.Book;
 import com.example.biblioteisandroid2.R;
+import com.example.biblioteisandroid2.ScannerActivity;
 
 import java.util.List;
 
-public class InicioBookAdapter extends RecyclerView.Adapter<InicioBookAdapter.BookViewHolder> {
+public class InicioBookAdapter extends RecyclerView.Adapter<BookInicioViewHolder> {
 
     private List<Book> bookList;
 
     /**
-     * Constructor para recibir la lista de libros.
+     * Constructor para recibir la lista de libgitros.
      *
      * @param bookList Lista de libros a mostrar en el RecyclerView.
      */
@@ -38,10 +41,10 @@ public class InicioBookAdapter extends RecyclerView.Adapter<InicioBookAdapter.Bo
      */
     @NonNull
     @Override
-    public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BookInicioViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflar el layout de cada ítem
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_inicio, parent, false);
-        return new BookViewHolder(view);
+        return new BookInicioViewHolder(view);
     }
 
     /**
@@ -52,7 +55,7 @@ public class InicioBookAdapter extends RecyclerView.Adapter<InicioBookAdapter.Bo
      * @param position La posición del libro en la lista.
      */
     @Override
-    public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BookInicioViewHolder holder, int position) {
         // Obtener el libro y asignar los valores a los elementos
         Book book = bookList.get(position);
         holder.titleTextView.setText(book.getTitle());
@@ -60,6 +63,13 @@ public class InicioBookAdapter extends RecyclerView.Adapter<InicioBookAdapter.Bo
         holder.publishedDateTextView.setText(book.getPublishedDate());
         // Aquí podrías poner una imagen real si tienes una URL o recurso
         holder.bookImageView.setImageResource(R.drawable.book_1);
+        //Para el boton ver mas...
+        holder.btnVerInfoLibro.setOnClickListener(v -> {
+            Toast.makeText(holder.itemView.getContext(), "Escanea el código QR del libro", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(holder.itemView.getContext(), ScannerActivity.class);
+            intent.putExtra("BOOK_ID", book.getId());
+            ((Activity) holder.itemView.getContext()).startActivityForResult(intent, 1);
+      });
     }
 
     /**
@@ -71,29 +81,5 @@ public class InicioBookAdapter extends RecyclerView.Adapter<InicioBookAdapter.Bo
     @Override
     public int getItemCount() {
         return bookList.size();
-    }
-
-    /**
-     * ViewHolder que contiene las vistas de cada ítem del RecyclerView.
-     * Se encarga de inicializar las vistas y asignarlas a las variables correspondientes.
-     */
-    public static class BookViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView, authorTextView, publishedDateTextView;
-        ImageView bookImageView;
-        Button btnVerInfoLibro;
-
-        /**
-         * Constructor que inicializa las vistas del ítem.
-         *
-         * @param itemView La vista del ítem del RecyclerView.
-         */
-        public BookViewHolder(View itemView) {
-            super(itemView);
-            titleTextView = itemView.findViewById(R.id.title);
-            authorTextView = itemView.findViewById(R.id.author);
-            publishedDateTextView = itemView.findViewById(R.id.publishedDate);
-            bookImageView = itemView.findViewById(R.id.bookPicture);
-            btnVerInfoLibro = itemView.findViewById(R.id.btnVerInfoLibro);
-        }
     }
 }
