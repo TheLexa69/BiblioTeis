@@ -95,7 +95,6 @@ public class BookLendingAdapter extends RecyclerView.Adapter<BookLendingViewHold
             Intent intent = new Intent(context, InfoLibro.class);
             intent.putExtra(InfoLibro.BOOK_ID_EXTRA, bookLending.getBook().getId());
             intent.putExtra(InfoLibro.USER_ID_EXTRA, userId);
-            intent.putExtra("TIPO", 0);
             context.startActivity(intent);
         });
     }
