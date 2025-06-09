@@ -175,6 +175,8 @@ public class InfoLibro extends AppCompatActivity {
         btnVolver = findViewById(R.id.btnInfoBookVolver);
         bookLendingRepository = new BookLendingRepository();
 
+
+
         // Crear el ViewModel y solicitar información del libro
         InfoLibroVM vm = new ViewModelProvider(this).get(InfoLibroVM.class);
 

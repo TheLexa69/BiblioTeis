@@ -23,6 +23,7 @@ import java.util.List;
  * Actividad principal que maneja el inicio de sesión de los usuarios.
  * Permite ingresar credenciales y autenticar al usuario para acceder a la aplicación.
  */
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String EMAIL = "logged_email";

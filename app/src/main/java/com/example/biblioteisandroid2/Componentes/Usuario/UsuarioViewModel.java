@@ -13,6 +13,7 @@ import com.example.biblioteisandroid2.API.repository.BookRepository;
  * Actúa como intermediario entre la interfaz de usuario y el UserRepository.
  */
 public class UsuarioViewModel extends ViewModel {
+
     private final UserRepository userRepository;
     private final MutableLiveData<User> userLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
